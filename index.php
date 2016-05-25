@@ -128,17 +128,17 @@
 		$sort_l = 'last_descending';
 					}
 	elseif ($sort_l == 'last_descending'){
-			$sql = "SELECT id, last_name, first_name, cell_phone, work_phone, home_phone, email, best_phone FROM users_contacts, contacts LEFT OUTER JOIN best_phone ON best_phone.id_contacts = contacts.id WHERE users_contacts.username = '$username' AND contacts.id = users_contacts.id_contacts ORDER BY last_name DESC";
+			$sql = "SELECT id, last_name, first_name, cell_phone, work_phone, home_phone, email, best_phone FROM users_contacts, contacts LEFT OUTER JOIN best_phone ON best_phone.id_contacts = contacts.id WHERE users_contacts.username = '$username' AND contacts.id = users_contacts.id_contacts ORDER BY last_name DESC LIMIT $start_from, $num_records_per_page";
 			$symbol_l= '&#9650';
 			$sort_l = 'last_ascending';	
 	}
 	elseif ($sort_f == 'first_descending'){
-			$sql = "SELECT id, last_name, first_name, cell_phone, work_phone, home_phone, email, best_phone FROM users_contacts, contacts LEFT OUTER JOIN best_phone ON best_phone.id_contacts = contacts.id WHERE users_contacts.username = '$username' AND contacts.id = users_contacts.id_contacts ORDER BY first_name DESC";
+			$sql = "SELECT id, last_name, first_name, cell_phone, work_phone, home_phone, email, best_phone FROM users_contacts, contacts LEFT OUTER JOIN best_phone ON best_phone.id_contacts = contacts.id WHERE users_contacts.username = '$username' AND contacts.id = users_contacts.id_contacts ORDER BY first_name DESC LIMIT $start_from, $num_records_per_page";
 			$symbol_f= '&#9650';
 				
 	}
 	elseif ($sort_f == 'first_ascending'){
-			$sql = "SELECT id, last_name, first_name, cell_phone, work_phone, home_phone, email, best_phone FROM users_contacts, contacts LEFT OUTER JOIN best_phone ON best_phone.id_contacts = contacts.id WHERE users_contacts.username = '$username' AND contacts.id = users_contacts.id_contacts ORDER BY first_name";
+			$sql = "SELECT id, last_name, first_name, cell_phone, work_phone, home_phone, email, best_phone FROM users_contacts, contacts LEFT OUTER JOIN best_phone ON best_phone.id_contacts = contacts.id WHERE users_contacts.username = '$username' AND contacts.id = users_contacts.id_contacts ORDER BY first_name LIMIT $start_from, $num_records_per_page";
 			$symbol_f= "&#9660";
 	}
 
@@ -224,8 +224,11 @@
 					elseif ($row["best_phone"] == 'work'){
 						$best_phone = $row["work_phone"];
 					}
-						elseif ($row["best_phone"] == 'home'){
+					elseif ($row["best_phone"] == 'home'){
 						$best_phone = $row["home_phone"];
+					}
+					elseif ($row["best_phone"] == ''){
+						$best_phone ='';
 					}
 
 					echo 

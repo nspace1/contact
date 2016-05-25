@@ -86,7 +86,7 @@
 		$page_active = 1; 
 	}	
 
-	
+
 	$sql1 = "SELECT id FROM contacts, users_contacts  WHERE users_contacts.username = '$username'  AND contacts.id = users_contacts.id_contacts";
 		$res = mysqli_query($conn, $sql1);
 		$how_many_records = mysqli_num_rows($res);
@@ -114,14 +114,6 @@
 			if ($page_active > 2){
 				$pre_page2 = $page_active - 2;
 			}
-			echo "<a href='index.php?page_active=1'>First page</a>..";
-			echo "<a href='index.php?page_active=" . $pre_page2 ."'>". $pre_page2."</a>..";
-			echo "<a href='index.php?page_active=" . $pre_page ."'>". $pre_page."</a>..";
-			echo "<a href='index.php?page_active=" . $pre_page ."'>&#9664---</a>".$page_active;
-			echo "<a href='index.php?page_active=" . $next_page ."'>---&#9654</a>..";
-			echo "<a href='index.php?page_active=" . $next_page ."'>". $next_page."</a>..";
-			echo "<a href='index.php?page_active=" .$next_page2 ."'>". $next_page2."</a>..";
-			echo "<a href='index.php?page_active=" . $last_page ."'>Last page</a>";
 		}	
 // sort records
 	//echo "&#9650";▲

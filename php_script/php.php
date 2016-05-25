@@ -18,7 +18,7 @@ $log_sql="";
     
     $sql = "CREATE TABLE users_contacts (
     id_contacts INT(6) UNSIGNED,
-    username VARCHAR(30)
+    username ENUM('cell', 'work', 'home', '')
     )";
 
     if (mysqli_query($conn, $sql)) {

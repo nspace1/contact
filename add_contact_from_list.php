@@ -66,8 +66,7 @@
 	<title>Contact mananger</title>
 	<meta charset="UTF-8">
 	<link rel="stylesheet" type="text/css" href="css/normalize.css">
-	<link rel="stylesheet" type="text/css" href="css/style.css">
-	<script src="js_scripts\jquery-2.2.3.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/style.css">	
 </head>
 <body>
 	<header class="header">

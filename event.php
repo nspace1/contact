@@ -10,7 +10,6 @@
 
 	require_once 'mail.php';
 
-
 	$to="";
 	$log_sql="";
 	$msg_add_mail="";
@@ -190,9 +189,7 @@
 	<title>Contact manager</title>
 	<meta charset="UTF-8">
 	<link rel="stylesheet" type="text/css" href="css/normalize.css">
-	<link rel="stylesheet" type="text/css" href="css/style.css">
-	<script src="js_scripts\jquery-2.2.3.min.js"></script>
-	<script src="js_scripts\validate.js"></script> 
+	<link rel="stylesheet" type="text/css" href="css/style.css">	 
 </head>
 <body>
 	<header class="header">

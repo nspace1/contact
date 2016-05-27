@@ -95,7 +95,7 @@
 
 	function validate_username($field, $conn) {
 		if ($field == "") {
-			return "Заповніть поле Username<br>";
+			return "Please enter Username<br>";
 		}
 		else if (strlen($field) < 3) {
 
@@ -115,7 +115,7 @@
 	}
 	function validate_login($field) {
 		if ($field == "") {
-			return "Заповніть поле Username<br>";
+			return "Please enter Username<br>";
 		}
 		else if (strlen($field) < 3) {
 
@@ -130,7 +130,7 @@
 
 	function validate_password($field) {
 		if ($field == ""){
-			return "Заповніть поле Password<br>";
+			return "Please enter Password<br>";
 		}
 		else if (strlen($field) < 6){
 			return "Password повинен містити > 6 символів<br>";
@@ -141,10 +141,10 @@
 
 	function validate_email($field) {
 		if ($field == ""){
-			return "Введіть адрес електронної пошти<br>";
+			return "Please enter email<br>";
 		}
 		else if (!((strpos($field, ".") > 0) &&	(strpos($field, "@") > 0)) || preg_match("/[^a-zA-Z0-9.@_-]/", $field)){
-			return "Email має невірний формат<br>";
+			return "Email has a wrong format<br>";
 		}
 		return "";
 	}
@@ -155,21 +155,6 @@
 	function string_fix($str, $conn){
 		return htmlentities(mysqli_real_escape_string($conn, $str));
 	}
-/*
-
-	function get_post($var) {
-		global $conn;
-		if (get_magic_quotes_gpc()) $_POST[$var] = htmlentities(stripslashes($_POST[$var]));
-		return htmlentities(mysqli_real_escape_string($conn, $_POST[$var]));
-	}
-
-	function get_get($var) {		
-		global $conn;
-		if (get_magic_quotes_gpc()) $_GET[$var] = htmlentities(stripslashes($_GET[$var]));
-		return htmlentities(mysqli_real_escape_string($conn, $_GET[$var]));
-	 }
-
-	 */
 
 ?>
 

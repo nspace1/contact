@@ -145,7 +145,7 @@
 		if (!$result) {
 			$log_sql =  "Помилка: " . mysqli_error($conn);			
 			echo $log_sql;
-			//header ("location:error.php");
+			header ("location:error.php");
 		}
 	}
 	

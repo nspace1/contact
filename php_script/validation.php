@@ -144,13 +144,12 @@
 			return "Please enter email<br>";
 		}
 		else if (!((strpos($field, ".") > 0) &&	(strpos($field, "@") > 0)) || preg_match("/[^a-zA-Z0-9.@_-]/", $field)){
-			return "Email has a wrong format<br>";
+			return "Email has a wrong format";
 		}
 		return "";
 	}
 
 
-// перевірка на спецсимволи
 
 	function string_fix($str, $conn){
 		return htmlentities(mysqli_real_escape_string($conn, $str));

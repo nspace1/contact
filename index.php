@@ -74,7 +74,7 @@
 		$next_page2 = '';				
 		$pre_page = '';
 		$pre_page2 = '';
-		$last_page = '';
+		//$last_page = '';
 		$num_records_per_page = 5;
 		$first_page = 1;
 		
@@ -90,6 +90,7 @@
 		$res = mysqli_query($conn, $sql1);
 		$how_many_records = mysqli_num_rows($res);
 	if (mysqli_num_rows($res) !=  0){
+		
 			$last_page = ceil ($how_many_records /  $num_records_per_page);
 			if ($page_active < 1 ){
 				$page_active = 1;
@@ -106,22 +107,21 @@
 				}
 				if ($page_active < $last_page-1){
 					$next_page2 =  $page_active + 2;
-				}
+				}								
 				if ($page_active > 1){
 					$pre_page = $page_active - 1;
 				}
 				if ($page_active > 2){
 					$pre_page2 = $page_active - 2;
 				}
-			}	
+				
+		}	
 	// sort records
 		//echo "&#9650";▲
 		//echo "&#9660";▼
 
-		//SELECT id, last_name, first_name, cell_phone, best_phone FROM contacts LEFT OUTER JOIN best_phone ON best_phone.id_contacts = contacts.id
 		if ($sort_l == 'last_ascending' or $sort_l == "" and (!isset($_GET["sort_f"])) ){
-			$sql = "SELECT id, last_name, first_name, cell_phone, work_phone, home_phone, email, best_phone FROM users_contacts, contacts LEFT OUTER JOIN best_phone ON best_phone.id_contacts = contacts.id WHERE users_contacts.username = '$username' AND contacts.id = users_contacts.id_contacts ORDER BY last_name LIMIT $start_from, $num_records_per_page";
-
+			$sql = "SELECT id, last_name, first_name, cell_phone, work_phone, home_phone, email, best_phone FROM users_contacts, contacts, best_phone WHERE best_phone.id_contacts = contacts.id AND users_contacts.username = '$username' AND contacts.id = users_contacts.id_contacts ORDER BY last_name LIMIT $start_from, $num_records_per_page";
 			
 			$symbol_l= '&#9660';
 			$sort_l = 'last_descending';
@@ -147,11 +147,7 @@
 			echo $log_sql;
 			header ("location:error.php");
 		}
-	}
-	
-	//pagination
-			
-		
+	}		
 		
 
 ?>

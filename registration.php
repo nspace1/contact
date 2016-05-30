@@ -61,13 +61,13 @@
 		<div class="container">
 			<form action="registration.php" method="post" id="reg">				
 			<div class="form">
-			<input  type="text" name="username"  value="<?php echo $username; ?>" maxlength="30" placeholder="Username">
+			<input  type="text" name="username"  value="<?php echo $username; ?>"  placeholder="Username">
 			</div>
 			<div class="form">
-			<input  type="password" name="password" value="<?php echo $password; ?>" maxlength="30" placeholder="Password">
+			<input  type="password" name="password" value="<?php echo $password; ?>"  placeholder="Password">
 			</div>
 			<div class="form">
-			<input type="password" name="confirm_password" value="<?php echo $confirm_password; ?>" maxlength="30" placeholder="Confirm password">
+			<input type="password" name="confirm_password" value="<?php echo $confirm_password; ?>" placeholder="Confirm password">
 			</div>	
 			<div class="form">
 			<a href="" onclick="document.getElementById('reg').submit('ок'); return false;" style="color:white"><h2>Click to Registration</h2></a>

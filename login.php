@@ -43,7 +43,7 @@
 
 			 		$_SESSION['username'] = $row['username'];
 
-			 		//час очікування
+			 		
 			 		ini_set('session.gc_maxlifetime', 60 * 60 * 24);
 			 		//ip
 			 		$_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];

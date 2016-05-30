@@ -23,8 +23,7 @@
 		$del_name=mysqli_fetch_assoc(mysqli_query($conn, $sql));
 
 			
-		if (isset($_POST['delete']) && isset($_POST['ask'])) {
-			echo "2222" . $id."<br>";
+		if (isset($_POST['delete']) && isset($_POST['ask'])) {			
 			$sql = "DELETE FROM contacts WHERE id = '$id'"; 
 			if (!mysqli_query($conn, $sql)) {
 				$log_sql .='Error delete<br>';
@@ -90,62 +89,64 @@
 	$sql1 = "SELECT id FROM contacts, users_contacts  WHERE users_contacts.username = '$username'  AND contacts.id = users_contacts.id_contacts";
 		$res = mysqli_query($conn, $sql1);
 		$how_many_records = mysqli_num_rows($res);
-		$last_page = ceil ($how_many_records /  $num_records_per_page);
-
-		if ($page_active < 1 ){
-			$page_active = 1;
-		}
-		if ($page_active > $last_page) {
-			$page_active = $last_page;
-		}
-		$start_from = ($page_active-1) * $num_records_per_page; 
-
-	if ($how_many_records > $num_records_per_page){
-			
-			if ($page_active < $last_page){
-				$next_page= $page_active + 1;
+	if (mysqli_num_rows($res) !=  0){
+			$last_page = ceil ($how_many_records /  $num_records_per_page);
+			if ($page_active < 1 ){
+				$page_active = 1;
 			}
-			if ($page_active < $last_page-1){
-				$next_page2 =  $page_active + 2;
+			if ($page_active > $last_page) {
+				$page_active = $last_page;
 			}
-			if ($page_active > 1){
-				$pre_page = $page_active - 1;
-			}
-			if ($page_active > 2){
-				$pre_page2 = $page_active - 2;
-			}
-		}	
-// sort records
-	//echo "&#9650";▲
-	//echo "&#9660";▼
+			$start_from = ($page_active-1) * $num_records_per_page; 
 
-	//SELECT id, last_name, first_name, cell_phone, best_phone FROM contacts LEFT OUTER JOIN best_phone ON best_phone.id_contacts = contacts.id
-	if ($sort_l == 'last_ascending' or $sort_l == "" and (!isset($_GET["sort_f"])) ){
-		$sql = "SELECT id, last_name, first_name, cell_phone, work_phone, home_phone, email, best_phone FROM users_contacts, contacts LEFT OUTER JOIN best_phone ON best_phone.id_contacts = contacts.id WHERE users_contacts.username = '$username' AND contacts.id = users_contacts.id_contacts ORDER BY last_name LIMIT $start_from, $num_records_per_page";
-
-		
-		$symbol_l= '&#9660';
-		$sort_l = 'last_descending';
-					}
-	elseif ($sort_l == 'last_descending'){
-			$sql = "SELECT id, last_name, first_name, cell_phone, work_phone, home_phone, email, best_phone FROM users_contacts, contacts LEFT OUTER JOIN best_phone ON best_phone.id_contacts = contacts.id WHERE users_contacts.username = '$username' AND contacts.id = users_contacts.id_contacts ORDER BY last_name DESC LIMIT $start_from, $num_records_per_page";
-			$symbol_l= '&#9650';
-			$sort_l = 'last_ascending';	
-	}
-	elseif ($sort_f == 'first_descending'){
-			$sql = "SELECT id, last_name, first_name, cell_phone, work_phone, home_phone, email, best_phone FROM users_contacts, contacts LEFT OUTER JOIN best_phone ON best_phone.id_contacts = contacts.id WHERE users_contacts.username = '$username' AND contacts.id = users_contacts.id_contacts ORDER BY first_name DESC LIMIT $start_from, $num_records_per_page";
-			$symbol_f= '&#9650';
+		if ($how_many_records > $num_records_per_page){
 				
-	}
-	elseif ($sort_f == 'first_ascending'){
-			$sql = "SELECT id, last_name, first_name, cell_phone, work_phone, home_phone, email, best_phone FROM users_contacts, contacts LEFT OUTER JOIN best_phone ON best_phone.id_contacts = contacts.id WHERE users_contacts.username = '$username' AND contacts.id = users_contacts.id_contacts ORDER BY first_name LIMIT $start_from, $num_records_per_page";
-			$symbol_f= "&#9660";
-	}
+				if ($page_active < $last_page){
+					$next_page= $page_active + 1;
+				}
+				if ($page_active < $last_page-1){
+					$next_page2 =  $page_active + 2;
+				}
+				if ($page_active > 1){
+					$pre_page = $page_active - 1;
+				}
+				if ($page_active > 2){
+					$pre_page2 = $page_active - 2;
+				}
+			}	
+	// sort records
+		//echo "&#9650";▲
+		//echo "&#9660";▼
 
-	$result = mysqli_query($conn, $sql);
-	if (!$result) {
-		$log_sql =  "Помилка: " . mysqli_error($conn);			
-		header ("location:error.php");
+		//SELECT id, last_name, first_name, cell_phone, best_phone FROM contacts LEFT OUTER JOIN best_phone ON best_phone.id_contacts = contacts.id
+		if ($sort_l == 'last_ascending' or $sort_l == "" and (!isset($_GET["sort_f"])) ){
+			$sql = "SELECT id, last_name, first_name, cell_phone, work_phone, home_phone, email, best_phone FROM users_contacts, contacts LEFT OUTER JOIN best_phone ON best_phone.id_contacts = contacts.id WHERE users_contacts.username = '$username' AND contacts.id = users_contacts.id_contacts ORDER BY last_name LIMIT $start_from, $num_records_per_page";
+
+			
+			$symbol_l= '&#9660';
+			$sort_l = 'last_descending';
+						}
+		elseif ($sort_l == 'last_descending'){
+				$sql = "SELECT id, last_name, first_name, cell_phone, work_phone, home_phone, email, best_phone FROM users_contacts, contacts LEFT OUTER JOIN best_phone ON best_phone.id_contacts = contacts.id WHERE users_contacts.username = '$username' AND contacts.id = users_contacts.id_contacts ORDER BY last_name DESC LIMIT $start_from, $num_records_per_page";
+				$symbol_l= '&#9650';
+				$sort_l = 'last_ascending';	
+		}
+		elseif ($sort_f == 'first_descending'){
+				$sql = "SELECT id, last_name, first_name, cell_phone, work_phone, home_phone, email, best_phone FROM users_contacts, contacts LEFT OUTER JOIN best_phone ON best_phone.id_contacts = contacts.id WHERE users_contacts.username = '$username' AND contacts.id = users_contacts.id_contacts ORDER BY first_name DESC LIMIT $start_from, $num_records_per_page";
+				$symbol_f= '&#9650';
+					
+		}
+		elseif ($sort_f == 'first_ascending'){
+				$sql = "SELECT id, last_name, first_name, cell_phone, work_phone, home_phone, email, best_phone FROM users_contacts, contacts LEFT OUTER JOIN best_phone ON best_phone.id_contacts = contacts.id WHERE users_contacts.username = '$username' AND contacts.id = users_contacts.id_contacts ORDER BY first_name LIMIT $start_from, $num_records_per_page";
+				$symbol_f= "&#9660";
+		}
+
+		$result = mysqli_query($conn, $sql);
+		if (!$result) {
+			$log_sql =  "Помилка: " . mysqli_error($conn);			
+			echo $log_sql;
+			//header ("location:error.php");
+		}
 	}
 	
 	//pagination
@@ -209,14 +210,9 @@
 						</tr>
 					</thead>
 					<tbody>
-			<?php
-
-				
-			
-
-
-				
-
+			<?php		
+							
+			if (mysqli_num_rows($res) !=  0){
 				while ($row = mysqli_fetch_assoc($result)) { 
 					if ($row["best_phone"] == 'cell'){
 						$best_phone = $row["cell_phone"];
@@ -253,6 +249,7 @@
 								</form></td>
 						</tr>";
 				} 
+			}
 				mysqli_close($conn);
 				?>
 					

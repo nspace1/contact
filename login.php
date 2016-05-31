@@ -29,7 +29,7 @@
 		
 		if ($fail == "") {
 
-		 	$sql = "SELECT username FROM users WHERE username='$login' and password ='$password'";
+		 	$sql = "SELECT id, username FROM users WHERE username='$login' and password ='$password'";
 		 	$result = mysqli_query($conn, $sql);
 
 		 	if ($result) {
@@ -42,6 +42,7 @@
 			 		$_SESSION['auth'] = 'true';
 
 			 		$_SESSION['username'] = $row['username'];
+			 		$_SESSION['users_id'] = $row['id'];
 
 			 		
 			 		ini_set('session.gc_maxlifetime', 60 * 60 * 24);

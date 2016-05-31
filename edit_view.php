@@ -30,7 +30,7 @@
 		$cell_check = "";
 		$form_button = "add";
 		$validate='';
-		$username = $_SESSION['username'];
+		$username = $_SESSION['users_id'];
 		
 
 //edit record in fields
@@ -134,22 +134,15 @@
 	
 //  if button add insert
 			if (isset($_POST["add"])){
-				$sql = "INSERT INTO contacts (first_name, last_name, email, home_phone, work_phone, cell_phone, address1, address2, city, state, zip, country, birth_day)
-					VALUES ('$first_name', '$last_name', '$email', '$home_phone', '$work_phone', '$cell_phone', '$address1', '$address2', '$city', '$state', '$zip', '$country', '$birth_day' )";
+				$sql = "INSERT INTO contacts (users_id, first_name, last_name, email, home_phone, work_phone, cell_phone, address1, address2, city, state, zip, country, birth_day)
+					VALUES ('$username','$first_name', '$last_name', '$email', '$home_phone', '$work_phone', '$cell_phone', '$address1', '$address2', '$city', '$state', '$zip', '$country', '$birth_day' )";
 
 				if (!mysqli_query($conn, $sql)) {
 					$log_sql =  "Error write to DB" . $sql . "<br>" . mysqli_error($conn);
 					header ("location:error.php");
 				}
 
-				$id_contacts = mysqli_insert_id($conn);
-				$sql = "INSERT INTO users_contacts (username, id_contacts)
-						VALUES ('$username', '$id_contacts')";
-
-				if (!mysqli_query($conn, $sql)) {	
-					$log_sql =  "Error write to DB" . $sql . "<br>" . mysqli_error($conn);
-					header ("location:error.php");
-				}
+				$id_contacts = mysqli_insert_id($conn);				
 
 				$sql = "INSERT INTO best_phone (best_phone, id_contacts)
 						VALUES ('$best_phone', '$id_contacts')";
@@ -165,29 +158,21 @@
 //if button edit UPDATE
 			if (isset($_POST["edit"])) {			
 
-				$sql = "UPDATE contacts SET
-				first_name = '$first_name', 
-				last_name = '$last_name',
-				email = '$email',
-				home_phone = '$home_phone',
-				work_phone = '$work_phone',
-				cell_phone = '$cell_phone',				
-				address1 = '$address1',
-				address2 = '$address2',
-				city = '$city',
-				state = '$state',
-				zip = '$zip',
-				country = '$country',
-				birth_day = '$birth_day'
-				WHERE id=$id_edit";
-	mysqli_set_charset( $conn, 'utf8');
-				if (!mysqli_query($conn, $sql)) {
-					$log_sql =  "Error write to DB" . $sql . "<br>" . mysqli_error($conn);
-					header ("location:error.php");
-				}
-				$sql = "UPDATE best_phone SET
-				best_phone = '$best_phone'				
-				WHERE id_contacts=$id_edit";
+				$sql = "UPDATE contacts c JOIN best_phone b ON c.id='$id_edit' AND b.id_contacts='$id_edit' SET
+				c.first_name = '$first_name', 
+				c.last_name = '$last_name',
+				c.email = '$email',
+				c.home_phone = '$home_phone',
+				c.work_phone = '$work_phone',
+				c.cell_phone = '$cell_phone',				
+				c.address1 = '$address1',
+				c.address2 = '$address2',
+				c.city = '$city',
+				c.state = '$state',
+				c.zip = '$zip',
+				c.country = '$country',
+				c.birth_day = '$birth_day',
+				b.best_phone = '$best_phone'";
 
 				if (mysqli_query($conn, $sql)) {
 					$log_sql =  "Error write to DB" . $sql . "<br>" . mysqli_error($conn);

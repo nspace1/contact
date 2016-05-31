@@ -15,34 +15,9 @@
 	$msg_add_mail="";
 	$msg_visibility="visibility: hidden";
 	$send_address="";
-	$mail_log="";
+	
 	$username=$_SESSION['username'];
 
-//Delete event
-	if (isset($_POST["delete"])) {
-		$id = string_fix($_POST['id'], $conn);
-		$sql = "DELETE FROM events WHERE id = '$id'"; 
-		if (mysqli_query($conn, $sql)) {
-			$log_sql="Запис видалено";
-		}
-		else {
-			$log_sql = "Помилка видалення" . $sql . "<br>" . mysqli_error($conn);			
-		}
-		$sql = "DELETE FROM events_sendmail WHERE id_events = '$id'";
-		if (mysqli_query($conn, $sql)) {
-			$log_sql='Запис видалено';			
-		}
-		else {
-			$log_sql = 'Помилка видалення' . $sql . "<br>" . mysqli_error($conn);			
-		}
-		$sql = "DELETE FROM users_events WHERE id_events = '$id'";
-		if (mysqli_query($conn, $sql)) {
-			$log_sql='Запис видалено';			
-		}
-		else {
-			$log_sql = 'Помилка видалення' . $sql . "<br>" . mysqli_error($conn);			
-		}
-	}
 // list mail in field To:
 	if (isset($_POST['ACCEPT'])){
 		if (isset($_POST['checkAll'])){

@@ -258,12 +258,12 @@
 				<?php
 					if ($how_many_records > $num_records_per_page){
 						echo "<a href='index.php?page_active=1'>First page</a>..";
+						echo "<a href='index.php?page_active=" . $pre_page ."'>&#9664---</a>..";
 						echo "<a href='index.php?page_active=" . $pre_page2 ."'>". $pre_page2."</a>..";
-						echo "<a href='index.php?page_active=" . $pre_page ."'>". $pre_page."</a>..";
-						echo "<a href='index.php?page_active=" . $pre_page ."'>&#9664---</a>".$page_active;
-						echo "<a href='index.php?page_active=" . $next_page ."'>---&#9654</a>..";
+						echo "<a href='index.php?page_active=" . $pre_page ."'>". $pre_page."</a>..<span style='font-size:1.5em;'>". $page_active .'</span>..';										
 						echo "<a href='index.php?page_active=" . $next_page ."'>". $next_page."</a>..";
 						echo "<a href='index.php?page_active=" .$next_page2 ."'>". $next_page2."</a>..";
+						echo "<a href='index.php?page_active=" . $next_page ."'>---&#9654</a>..";
 						echo "<a href='index.php?page_active=" . $last_page ."'>Last page</a>";
 					}
 				?>

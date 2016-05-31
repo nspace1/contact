@@ -8,6 +8,7 @@ function  sql_connect(){
 
 	 function sql_conn($db_hostname, $db_database, $db_username, $db_password){
  		 	 $conn = mysqli_connect($db_hostname, $db_username, $db_password, $db_database);
+ 		 	 mysqli_set_charset( $conn, 'utf8');
 			  if (mysqli_connect_errno())
 			  {
 			    echo "Failed to connect to MySQL: " . mysqli_connect_error();

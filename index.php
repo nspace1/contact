@@ -13,6 +13,7 @@
 	 
 //Delete contact
 	$form_ask_delete ='';
+mysqli_set_charset( $conn, 'utf8');
 
 	if (isset($_POST['delete'])) {
 		
@@ -140,7 +141,7 @@
 				$sql = "SELECT id, last_name, first_name, cell_phone, work_phone, home_phone, email, best_phone FROM users_contacts, contacts LEFT OUTER JOIN best_phone ON best_phone.id_contacts = contacts.id WHERE users_contacts.username = '$username' AND contacts.id = users_contacts.id_contacts ORDER BY first_name LIMIT $start_from, $num_records_per_page";
 				$symbol_f= "&#9660";
 		}
-
+		
 		$result = mysqli_query($conn, $sql);
 		if (!$result) {
 			$log_sql =  "Помилка: " . mysqli_error($conn);			

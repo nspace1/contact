@@ -180,7 +180,7 @@
 				country = '$country',
 				birth_day = '$birth_day'
 				WHERE id=$id_edit";
-
+	mysqli_set_charset( $conn, 'utf8');
 				if (!mysqli_query($conn, $sql)) {
 					$log_sql =  "Error write to DB" . $sql . "<br>" . mysqli_error($conn);
 					header ("location:error.php");

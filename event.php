@@ -39,34 +39,7 @@
 		}
 		$to = substr($to,0,-2);
 	}
-
-
-
-	if (isset($_POST['send'])){
-		
-		$subject = string_fix($_POST['subject'], $conn);
-		$event = string_fix($_POST['event'], $conn);
-		$date_event = date("Y-m-d H:i:s");
-
-		$sql = "INSERT INTO events (subject, event, date_event)
-				VALUES ('$subject', '$event', '$date_event')";
-
-		if (!mysqli_query($conn, $sql)) {			
-			$log_sql =  "Помилка запису в БД" . $sql . "<br>" . mysqli_error($conn);
-			header ("location:error.php");
-		}
-		$id_events=mysqli_insert_id($conn);
-		$_SESSION['id_events'] = $id_events;
-		
-		$sql = "INSERT INTO users_events (id_events, username)
-				VALUES ('$id_events', '$username')";
-		$result = mysqli_query($conn, $sql);
-
-		if (!$result) {			
-			$log_sql =  "Помилка запису в БД" . $sql . "<br>" . mysqli_error($conn);
-			header ("location:error.php");
-		}
- 
+	if (isset($_POST['send'])){		
 
 //Add not exist email and insert event_sendmail
 		$to1 = string_fix($_POST['to'], $conn);
@@ -78,13 +51,7 @@
     			$row = mysqli_fetch_assoc($result);
     			$id_contacts = $row['id'];
 
-    			$sql1 = "INSERT INTO events_sendmail (id_contacts, id_events)
-				VALUES ('$id_contacts', '$id_events')";				
-
-				if (!mysqli_query($conn, $sql1)) {
-					$log_sql =  "Помилка запису в БД" . $sql1 . "<br>" . mysqli_error($conn);
-					header ("location:error.php");
-				}
+    			
 			}
 			else {
 				$log_sql =$log_sql . "  no_ " .$tok;
@@ -95,10 +62,6 @@
 			$send_address[] = $tok;
 			    		$tok = strtok(" ,\n\t");
 		}
-//send mail
-	/*	if ($send_address != ""){
-			$mail_log = send_mail($send_address, $subject, $event);
-		}*/
 			
 	}
 //insert not exist email
@@ -130,31 +93,12 @@
 						$log_sql =  "Помилка запису в БД" . $sql . "<br>" . mysqli_error($conn);
 						echo $log_sql;
 						header ("location:error.php");
-					}					
-
-
-//insert add email to events_sendmail
-					$id_events = $_SESSION['id_events'];
-					$sql1 = "INSERT INTO events_sendmail (id_contacts, id_events)
-					VALUES ('$id_contacts', '$id_events')";		
-					if (mysqli_query($conn, $sql1)) {
-						$log_sql = "Запис успішно додано";
-					}
-					else {
-						$log_sql =  "Помилка запису в БД" . $sql1 . "<br>" . mysqli_error($conn);
-						header ("location:error.php");
-					}
-   	
+					}		
 		    	}
 	    	}
 	    	header("Location: index.php");
 		}
-//write evens records 
-	$sql = "SELECT id, date_event, subject, event FROM events, users_events WHERE users_events.username='$username' AND users_events.id_events = events.id ORDER BY date_event";
-	$result = mysqli_query($conn, $sql);
-	if (!$result) {
-		$log_sql =  "Помилка: " . mysqli_error($conn);
-	}	
+
 
 ?>
 
@@ -237,51 +181,8 @@
 							</td><td></td>
 						</tr>		
 					</table>
-			</form>
-			<span style='text-align: left'><h3><?php echo $mail_log; ?></h3></span>
-			</div>
-			<div id="event_table">
-				<table>
-					<thead>
-						<tr>
-							<th>Date Time </th>
-							<th>Subject </th>
-							<th>Event</th>
-							<th>Mail</th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php
-							while ($row = mysqli_fetch_assoc($result)) {
-								echo 
-									"<tr>
-										<td width='25%'>" . $row["date_event"] . "</td>
-										<td width='20%'>".  $row["subject"] . "</td>
-										<td width='65%''>" . $row["event"] . "</td>
-										<td>";
-											$id=$row['id'];
-											$sql_mail = "SELECT email FROM events_sendmail, contacts WHERE events_sendmail.id_events = '$id' AND  contacts.id = events_sendmail.id_contacts";
-											$result_mail=mysqli_query($conn, $sql_mail);
-											while ($row = mysqli_fetch_assoc($result_mail)) {
-												echo $row['email'] . ', ';
-											}
-
-								echo
-										"</td>
-										<td>
-											<form  method='post' action='event.php'>
-												<input type='hidden' name='id' value=". $id .">
-												<input type='hidden' name='delete' value='yes'>
-												<input type='submit' value='delete'>
-											</form>
-										</td>
-									</tr>";
-							} 
-						?>					
-					</tbody>
-				</table>
-			
-		</div>
+			</form>			
+		</div>			
 	</div>	
 </main>
 </body>

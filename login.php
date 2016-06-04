@@ -45,11 +45,7 @@
 			 		$_SESSION['users_id'] = $row['id'];
 
 			 		
-			 		ini_set('session.gc_maxlifetime', 60 * 60 * 24);
-			 		//ip
-			 		$_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
-			 		//агент
-			 		$_SESSION['ua'] = $_SERVER['HTTP_USER_AGENT'];
+			 		ini_set('session.gc_maxlifetime', 60 * 60 * 24);			 		
 			 		$_SESSION['check'] = hash('ripemd128',$_SERVER['REMOTE_ADDR'] .  $_SERVER['HTTP_USER_AGENT']);
 			 		ini_set('session.use_only_cookies', 1);
 			 		header("location: index.php");

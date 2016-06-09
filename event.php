@@ -16,15 +16,16 @@
 	$msg_visibility="visibility: hidden";
 	$send_address="";
 	
-	$username=$_SESSION['username'];
+	$username=$_SESSION['users_id'];
 
 // list mail in field To:
 	if (isset($_POST['ACCEPT'])){
 		if (isset($_POST['checkAll'])){
-			$sql = "SELECT email FROM contacts, users_contacts WHERE users_contacts.username = '$username' AND contacts.id = users_contacts.id_contacts";
+			$sql = "SELECT email FROM contacts WHERE users_id = '$username'";
 			$result = mysqli_query($conn, $sql);
 			if (! $result) {				
 				header ("location:error.php");
+				exit;
 			}
 			while ($row = mysqli_fetch_assoc($result)) {
 				$to .= $row["email"] . ", ";
@@ -45,93 +46,58 @@
 		$to1 = string_fix($_POST['to'], $conn);
 		$tok = strtok($to1, " ,\n\t");
 		while ($tok) {
-			$sql = "SELECT id, email FROM contacts, users_contacts WHERE users_contacts.username = '$username' AND contacts.id = users_contacts.id_contacts AND contacts.email='$tok'";    		
+			$sql = "SELECT id, email FROM contacts WHERE users_id = '$username' AND contacts.email='$tok'";    		
     		$result=mysqli_query($conn, $sql);
     		if   (mysqli_num_rows($result)) {
     			$row = mysqli_fetch_assoc($result);
-    			$id_contacts = $row['id'];
-
-    			
+    			$id_contacts = $row['id'];    			
 			}
 			else {
 				$log_sql =$log_sql . "  no_ " .$tok;
 				$msg_add_mail[] = $tok;
-
 			}
 //list mail to send
 			$send_address[] = $tok;
 			    		$tok = strtok(" ,\n\t");
-		}
-			
+		}			
 	}
 //insert not exist email
 	if(isset($_POST['add_ev_msg'])) {			
 			foreach ($_POST as $key => $value) {
 			    if ($value != "add_ev_msg" ){
 			    	$email = strtolower(string_fix($_POST["$key"], $conn));
-			    	$sql = "INSERT INTO contacts (email)
-					VALUES ('$email')";
+			    	$sql = "INSERT INTO contacts (email, users_id)
+					VALUES ('$email',users_id)";
 
 					if (mysqli_query($conn, $sql)) {	
-
-						$id_contacts = mysqli_insert_id($conn);	
-						$sql = "INSERT INTO users_contacts (username, id_contacts)
-							VALUES ('$username', '$id_contacts')";
-						if (mysqli_query($conn, $sql)) {
-								$log_sql = "Запис успішно додано";							
-						}
-						else {
-								$log_sql =  "Помилка запису в БД" . $sql . "<br>" . mysqli_error($conn);
-								header ("location:error.php");
-						}	
+						$id_contacts = mysqli_insert_id($conn);							
 						$sql1= "INSERT INTO best_phone (id_contacts) VALUES ('$id_contacts')";
 						if (!mysqli_query($conn, $sql1)) {
 							$log_sql =  "Error write to DB" . $sql1 . "<br>" . mysqli_error($conn);
+							header ("location:error.php");
+							exit;
 						}
 					}
 					else {
 						$log_sql =  "Помилка запису в БД" . $sql . "<br>" . mysqli_error($conn);
 						echo $log_sql;
 						header ("location:error.php");
+						exit;
 					}		
 		    	}
 	    	}
 	    	header("Location: index.php");
+	    	exit;
 		}
-
-
+	//header
+	require 'pages\header.php';
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Contact manager</title>
-	<meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" href="css/normalize.css">
-	<link rel="stylesheet" type="text/css" href="css/style.css">	 
-</head>
-<body>
-	<header class="header">
-		<div class="container">
-			<h1>Contact mananger</h1>
-		</div>
-	</header>
-	<nav class="page-navigation">
-		<div class="container">
-			<ul>
-				<li><a href="index.php">Contacts</a></li>
-				<li><a href="event.php">Event</a></li>
-			</ul>
-			<form class="login" action="login.php" method="post">
-			<span class="session_va"><?php echo $_SESSION['username']; ?></span>
-				<input type="submit" name="logout" value="Logout">
-			</form>
-		</div>
-	</nav>
+
 	<main>
 		<div class="container">
 			<div id='content_view_ev'>
-				<div class="msg" style="<?php if ($msg_add_mail !== "") echo "visibility: visible"; ?>">
+				<div class="msg" style="<?php echo ($msg_add_mail !== "") ? 'visibility: visible':'visibility: hidden'; ?>">
 					<small>This address is not in your contact mananger</small><br><br>
 					<form action="event.php" method="post" id="msg_form">
 						<?php 

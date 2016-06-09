@@ -4,8 +4,7 @@
 	function validate_user($username, $password, $confirm_password, $conn){				
 			$fail="";
 			$error['username'] = validate_username($username,  $conn);
-			$error['password'] = validate_password($password);	
-			
+			$error['password'] = validate_password($password);				
 			if ($confirm_password != $password) {			
 				$fail .= "Confirm Password and Password not equal<br>";
 			}		
@@ -42,8 +41,7 @@
 			$fail .=$key. ':  ';
 			$fail .=$value . '<br>';
 			}
-		}
-			
+		}			
 			if ($fail == ""){
 				return true;
 			}

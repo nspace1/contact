@@ -34,7 +34,6 @@
 	}
 
 	if (isset($_POST['send'])){
-
 //Add not exist email and insert event_sendmail
 		$to1 = string_fix($_POST['to'], $conn);
 		$tok = strtok($to1, " ,\n\t");
@@ -56,33 +55,34 @@
 	}
 //insert not exist email
 	if(isset($_POST['add_ev_msg'])) {			
-			foreach ($_POST as $key => $value) {
-			    if ($value != "add_ev_msg" ){
-			    	$email = strtolower(string_fix($_POST["$key"], $conn));
-			    	$sql = "INSERT INTO contacts (email, users_id)
-					VALUES ('$email',".$_SESSION['users_id'] . ")";
+		foreach ($_POST as $key => $value) {
+		    if ($value != "add_ev_msg" ){
+		    	$email = strtolower(string_fix($_POST["$key"], $conn));
+		    	$sql = "INSERT INTO contacts (email, users_id)
+				VALUES ('$email',".$_SESSION['users_id'] . ")";
 
-					if (mysqli_query($conn, $sql)) {	
-						$id_contacts = mysqli_insert_id($conn);							
-						$sql1= "INSERT INTO best_phone (id_contacts) VALUES ('$id_contacts')";
-						if (!mysqli_query($conn, $sql1)) {
-							$log_sql =  "Error write to DB" . $sql1 . "<br>" . mysqli_error($conn);
-							header ("location:error.php");
-							exit;
-						}
-					}
-					else {
-						$log_sql =  "Помилка запису в БД" . $sql . "<br>" . mysqli_error($conn);
-						echo $log_sql;
+				if (mysqli_query($conn, $sql)) {	
+					$id_contacts = mysqli_insert_id($conn);							
+					$sql1= "INSERT INTO best_phone (id_contacts) VALUES ('$id_contacts')";
+					if (!mysqli_query($conn, $sql1)) {
+						$log_sql =  "Error write to DB" . $sql1 . "<br>" . mysqli_error($conn);
 						header ("location:error.php");
 						exit;
-					}		
-		    	}
+					}
+				}
+				else {
+					$log_sql =  "error" . $sql . "<br>" . mysqli_error($conn);
+					echo $log_sql;
+					header ("location:error.php");
+					exit;
+				}		
 	    	}
-	    	header("Location: index.php");
-	    	exit;
-		}
+    	}
+    	header("Location: index.php");
+    	exit;
+	}
 	 //header
+	mysqli_close($conn);
 	require 'pages\header.php';
 ?>
 	<main>
@@ -144,8 +144,6 @@
 </main>
 </body>
 </html>
-<?php
-mysqli_close($conn);
-?>
+
 
 

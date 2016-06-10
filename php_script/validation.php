@@ -69,7 +69,6 @@
 	}
 
 	function validate_zip($field) {
-
 		if (strlen($field) > 10){
 			return "Field is limited to 10 characters";
 		}
@@ -79,7 +78,6 @@
 	}
 
 	function validate_phone($field) {
-
 		if (strlen($field) > 20){
 			return "Field is limited to 20 characters";
 		}
@@ -101,9 +99,7 @@
 		}
 		else if (preg_match("/[^a-zA-Z0-9_-]/", $field)){
 			return "Username може містити букви, цифри, -, _ <br>";
-		}
-
-		
+		}		
 		$sql= "SELECT username FROM users WHERE username='$field'";
 		    $result=mysqli_query($conn, $sql);
     		if   (mysqli_num_rows($result)) {
@@ -121,8 +117,7 @@
 		}
 		else if (preg_match("/[^a-zA-Z0-9_-]/", $field)){
 			return "Username може містити букви, цифри, -, _ <br>";
-		}
-		
+		}		
 	 	return "";
 	}
 

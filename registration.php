@@ -1,10 +1,8 @@
 <?php
 
 	require 'php_script\validation.php';
-
 	require_once 'php_script\sql_connect.php';
 	$conn = sql_connect();
-
 	$log_sql="";
 	$sql="";
 	$fail="";
@@ -21,23 +19,20 @@
 		$confirm_password = string_fix($_POST['confirm_password'], $conn);
 		$username = string_fix($_POST['username'], $conn);
 		$password = string_fix($_POST['password'], $conn);
-
-
 		$validate=validate_user($username, $password, $confirm_password, $conn);
 		
 			
-		if ($validate == 'true') {
-			
+		if ($validate == 'true') {			
 			$password = md5(trim($password));
-
 			$sql="INSERT INTO users (username, password)
 			   VALUES ('$username','$password')"; 
-
 			if (!mysqli_query($conn, $sql)) {
-			    $log_sql =  "Помилка запису в БД" . $sql . "<br>" . mysqli_error($conn);
+			    $log_sql =  "EROR" . $sql . "<br>" . mysqli_error($conn);
 			    header ("location:error.php");
+			    exit;
 			} 
 			header("Location: login.php");
+			exit;
 		}
 	}
 	mysqli_close($conn);

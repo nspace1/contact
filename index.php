@@ -44,8 +44,10 @@
 					</thead>
 					<tbody>
 						<?php	
-							//php_script\view_contacts_list.php
-							view_contacts_list_index_php($result, $res);	
+							if (!empty($result)){
+								//php_script\view_contacts_list.php
+								view_contacts_list_index_php($result, $res);	
+							}
 						?>					
 						</tbody>
 					</table>

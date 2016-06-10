@@ -24,7 +24,7 @@
 		$home_check = "";
 		$work_check = "";
 		$cell_check = "";
-		$form_button = "add";
+		$form_button = 'add';
 		$validate='';		
 
 //edit record in fields
@@ -52,6 +52,7 @@
 		$country = $row["country"];
 		$birth_day = $row["birth_day"];
 		$form_button = "edit";
+		
 		
 		$best_phone = $row["best_phone"];		
 		if ($best_phone == 'home') {
@@ -119,6 +120,7 @@
 			}
 		}		
 		$validate = validate_add_edit($first_name, $last_name, $email, $home_phone, $work_phone, $cell_phone, $address1, $address2, $city, $state,	$zip, $country,	$birth_day, $conn);
+		
 		if ($validate == 'true'){
 	
 //  if button add insert
@@ -173,6 +175,7 @@
 			exit;
 			}
 		}
+
 	}
 	mysqli_close($conn);
 

@@ -2,26 +2,18 @@
 <?php
 	require_once 'php_script\session.php';
 	session_security();
-
 	require_once 'php_script\validation.php';
-
 	require_once 'php_script\sql_connect.php';
 	$conn = sql_connect();
-
-	require_once 'mail.php';
-
 	$to="";
 	$log_sql="";
 	$msg_add_mail="";
 	$msg_visibility="visibility: hidden";
 	$send_address="";
-	
-	$username=$_SESSION['users_id'];
-
 // list mail in field To:
 	if (isset($_POST['ACCEPT'])){
 		if (isset($_POST['checkAll'])){
-			$sql = "SELECT email FROM contacts WHERE users_id = '$username'";
+			$sql = "SELECT email FROM contacts WHERE users_id = " .$_SESSION['users_id'];
 			$result = mysqli_query($conn, $sql);
 			if (! $result) {				
 				header ("location:error.php");
@@ -40,13 +32,14 @@
 		}
 		$to = substr($to,0,-2);
 	}
-	if (isset($_POST['send'])){		
+
+	if (isset($_POST['send'])){
 
 //Add not exist email and insert event_sendmail
 		$to1 = string_fix($_POST['to'], $conn);
 		$tok = strtok($to1, " ,\n\t");
 		while ($tok) {
-			$sql = "SELECT id, email FROM contacts WHERE users_id = '$username' AND contacts.email='$tok'";    		
+			$sql = "SELECT id, email FROM contacts WHERE contacts.email='$tok' AND users_id =" . $_SESSION['users_id'];
     		$result=mysqli_query($conn, $sql);
     		if   (mysqli_num_rows($result)) {
     			$row = mysqli_fetch_assoc($result);
@@ -67,7 +60,7 @@
 			    if ($value != "add_ev_msg" ){
 			    	$email = strtolower(string_fix($_POST["$key"], $conn));
 			    	$sql = "INSERT INTO contacts (email, users_id)
-					VALUES ('$email',users_id)";
+					VALUES ('$email',".$_SESSION['users_id'] . ")";
 
 					if (mysqli_query($conn, $sql)) {	
 						$id_contacts = mysqli_insert_id($conn);							
@@ -89,11 +82,9 @@
 	    	header("Location: index.php");
 	    	exit;
 		}
-	//header
+	 //header
 	require 'pages\header.php';
 ?>
-
-
 	<main>
 		<div class="container">
 			<div id='content_view_ev'>

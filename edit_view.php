@@ -1,16 +1,12 @@
 
 	<?php
-
 		require_once 'php_script\session.php';
 		session_security();
-
 		require_once 'php_script\validation.php';
-
 		require_once 'php_script\sql_connect.php';
 		$conn = sql_connect();
 
 		$log_sql="";
-
 		$first_name = "";
 		$last_name = "";
 		$email = "";
@@ -29,9 +25,7 @@
 		$work_check = "";
 		$cell_check = "";
 		$form_button = "add";
-		$validate='';
-		$username = $_SESSION['users_id'];
-		
+		$validate='';		
 
 //edit record in fields
 	if (isset($_POST['id']) && isset($_POST['edit_view'])) {
@@ -41,7 +35,6 @@
 			$log_sql .=  "Error " . $sql . "<br>" . mysqli_error($conn);
 			header ("location:error.php");
 		}
-
 		$result = mysqli_query($conn, $sql);
 		$row = mysqli_fetch_assoc($result);
 		
@@ -69,10 +62,8 @@
 		}
 		elseif ($best_phone == 'work') {
 			$work_check = "checked";
-		}	
+		}
 	}
-
-//add/edit record
 	if (isset($_POST["first_name"]) &&
 		isset($_POST['last_name']) &&
 		isset($_POST['email']) &&
@@ -101,41 +92,39 @@
 		$country = string_fix($_POST['country'], $conn);
 		$birth_day = string_fix($_POST['birth_day'], $conn);
 		$id_edit = string_fix($_POST['id_edit'], $conn);
-		
-		if (!isset($_POST['best_phone'])) {
-			
+
+		if (isset($_POST['best_phone'])) {
+			if (string_fix($_POST['best_phone'], $conn) == 'work') {
+				$best_phone = 'work';
+			}
+			elseif (string_fix($_POST['best_phone'], $conn) == 'home') {
+				$best_phone = 'home';
+			}
+			elseif (string_fix($_POST['best_phone'], $conn) == 'cell') {
+				$best_phone = 'cell';
+			}
 		}
-		elseif (string_fix($_POST['best_phone'], $conn) == 'work') {
-			$best_phone = 'work';
-		}
-		elseif (string_fix($_POST['best_phone'], $conn) == 'home') {
-			$best_phone = 'home';
-		}
-		elseif (string_fix($_POST['best_phone'], $conn) == 'cell') {
-			$best_phone = 'cell';
-		}
-		if ($cell_phone !== ''){
-			$best_phone = 'cell';
+		else{
+			if ($cell_phone !== ''){
+				$best_phone = 'cell';
 			}
 			elseif ($home_phone !== ''){
-			$best_phone = 'home';
+				$best_phone = 'home';
 			}
 			elseif ($work_phone !== ''){
-			$best_phone = 'work';
+				$best_phone = 'work';
 			}
 			else{
 				$best_phone = '';
 			}
-		
-
-
+		}		
 		$validate = validate_add_edit($first_name, $last_name, $email, $home_phone, $work_phone, $cell_phone, $address1, $address2, $city, $state,	$zip, $country,	$birth_day, $conn);
 		if ($validate == 'true'){
 	
 //  if button add insert
 			if (isset($_POST["add"])){
 				$sql = "INSERT INTO contacts (users_id, first_name, last_name, email, home_phone, work_phone, cell_phone, address1, address2, city, state, zip, country, birth_day)
-					VALUES ('$username','$first_name', '$last_name', '$email', '$home_phone', '$work_phone', '$cell_phone', '$address1', '$address2', '$city', '$state', '$zip', '$country', '$birth_day' )";
+					VALUES ('" .$_SESSION['users_id']. "','$first_name', '$last_name', '$email', '$home_phone', '$work_phone', '$cell_phone', '$address1', '$address2', '$city', '$state', '$zip', '$country', '$birth_day' )";
 
 				if (!mysqli_query($conn, $sql)) {
 					$log_sql =  "Error write to DB" . $sql . "<br>" . mysqli_error($conn);
@@ -152,6 +141,7 @@
 						header ("location:error.php");
 				}
 				header("Location: index.php");
+				exit;
 			}
 			 
 
@@ -174,45 +164,21 @@
 				c.birth_day = '$birth_day',
 				b.best_phone = '$best_phone'";
 
-				if (mysqli_query($conn, $sql)) {
+				if (!mysqli_query($conn, $sql)) {
 					$log_sql =  "Error write to DB" . $sql . "<br>" . mysqli_error($conn);
 					header ("location:error.php");
+					exit;
 				}
 			header("Location: index.php");
+			exit;
 			}
 		}
-
 	}
 	mysqli_close($conn);
-?>
 
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Contact manager</title>
-	<meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" href="css/normalize.css">
-	<link rel="stylesheet" type="text/css" href="css/style.css">
-	<scrip src="js_scripts\sort.js"></scrip>
-</head>
-<body>
-	<header class="header">
-		<div class="container">
-			<h1>Contact mananger</h1>
-		</div>
-	</header>
-	<nav class="page-navigation">
-		<div class="container">
-			<ul>
-				<li><a href="index.php">Contacts</a></li>
-				<li><a href="event.php">Event</a></li>
-			</ul>
-			<form class="login" action="login.php" method="post">
-				<span class="session_va"><?php echo $_SESSION['username']; ?></span>
-				<input type="submit" name="logout" value="Logout">
-			</form>
-		</div>
-	</nav>
+		//header
+	require 'pages\header.php';
+?>
 	<main class="main">
 		<div class="container">
 			<div class="form" >

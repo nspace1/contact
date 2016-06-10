@@ -3,11 +3,7 @@
 	$symbol_f ='';
 	$symbol_l ='';
 	$best_phone = '';	
-	//pagination
-	$next_page = '';
-	$next_page2 = '';				
-	$pre_page = '';
-	$pre_page2 = '';
+	//pagination	
 	$num_records_per_page = 5;
 	$first_page = 1;
 		
@@ -20,6 +16,7 @@
 	$sql1 = "SELECT id FROM contacts  WHERE users_id = " .$_SESSION['users_id'];
 		$res = mysqli_query($conn, $sql1);
 		$how_many_records = mysqli_num_rows($res);
+
 	if (mysqli_num_rows($res) !=  0){		
 		$last_page = ceil ($how_many_records /  $num_records_per_page);
 		if ($page_active < 1 ){
@@ -30,18 +27,10 @@
 		}
 		$start_from = ($page_active-1) * $num_records_per_page; 
 		if ($how_many_records > $num_records_per_page){				
-			if ($page_active < $last_page){
-				$next_page= $page_active + 1;
-			}
-			if ($page_active < $last_page-1){
-				$next_page2 =  $page_active + 2;
-			}								
-			if ($page_active > 1){
-				$pre_page = $page_active - 1;
-			}
-			if ($page_active > 2){
-				$pre_page2 = $page_active - 2;
-			}				
+			$next_page = ($page_active < $last_page)? $page_active + 1:'';
+			$next_page2 = ($page_active < $last_page-1)? $page_active + 2:'';
+			$pre_page = ($page_active > 1)?  $page_active - 1:'';
+			$pre_page2 = ($page_active > 2)? $page_active - 2:'';			
 		}	
 	// sort records	
 	// write contact records
@@ -72,8 +61,7 @@
 				$symbol_f= '&#9650';
 				$sort_f = 'first_ascending';
 			}
-		}
-		
+		}		
 		$result = mysqli_query($conn, $sql);
 		if (!$result) {
 			$log_sql =  "Помилка: " . mysqli_error($conn);			
@@ -84,8 +72,7 @@
 	}	
 	mysqli_close($conn);	
 
-	function view_pagination($how_many_records, $num_records_per_page, $pre_page, $pre_page, $pre_page2, $pre_page, $next_page, $next_page2, $next_page, $last_page, $page_active, $page){
-		if ($how_many_records > $num_records_per_page){
+	function view_pagination($how_many_records, $num_records_per_page, $pre_page, $pre_page, $pre_page2, $pre_page, $next_page, $next_page2, $next_page, $last_page, $page_active, $page){			
 			echo "
 			<div style='text-align:center'>
 				<a href='" . $page . " ?page_active=1'>First page</a>..
@@ -97,8 +84,6 @@
 				<a href='" . $page . "?page_active=" . $next_page ."'>---&#9654</a>..
 				<a href='" . $page . "?page_active=" . $last_page ."'>Last page</a>
 			</div>";
-		}				
-		
 	}
 
 	function view_contacts_list_index_php($result, $res){		
@@ -116,7 +101,6 @@
 				elseif ($row["best_phone"] == ''){
 					$best_phone ='';
 				}
-
 				echo 
 					"<tr>
 						<td>" . $row["last_name"] . "</td>
@@ -135,8 +119,7 @@
 								<input type='hidden' name='id' value=". $row["id"] .">
 								<input type='hidden' name='email' value=". $row["email"] .">
 								<input type='hidden' name='delete' value='yes'>
-								<input type='submit' value='delete'>
-							
+								<input type='submit' value='delete'>							
 							</form></td>
 					</tr>";
 			} 

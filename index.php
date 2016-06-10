@@ -1,12 +1,10 @@
 
-<?php
-	
+<?php	
 	require_once 'php_script\session.php';
 	session_security();	
 	require_once 'php_script\validation.php';	
 	require_once 'php_script\sql_connect.php';
-	$conn = sql_connect();	 
-	
+	$conn = sql_connect();	 	
 	//Delete contact
 	$form_ask_delete ='';
 	if (isset($_POST['delete'])) {
@@ -17,7 +15,6 @@
 	//header
 	require 'pages\header.php';
 ?>
-
 	<main class="main">
 		<div class="container">
 			<div class='content_view'>
@@ -56,8 +53,10 @@
 				<input type='submit' value= 'ADD'>				
 				</form>				
 				<?php
-					//php_script\view_contacts_list.php
-					view_pagination($how_many_records, $num_records_per_page, $pre_page, $pre_page, $pre_page2, $pre_page, $next_page, $next_page2, $next_page, $last_page, $page_active, 'index.php');
+					if ($how_many_records > $num_records_per_page){		
+						//php_script\view_contacts_list.php
+						view_pagination($how_many_records, $num_records_per_page, $pre_page, $pre_page, $pre_page2, $pre_page, $next_page, $next_page2, $next_page, $last_page, $page_active, 'index.php');
+					}
 				?>
 				</div>
 			</div>			

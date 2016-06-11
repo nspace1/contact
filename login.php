@@ -3,11 +3,11 @@
 	include 'php_script\validation.php';	
 	require_once 'php_script\session.php';
 	//session_security_login();
-	session_start();
+	/*session_start();
 	if ($_SESSION){
 	header ("location:index.php");
 	exit;
-	}
+	}*/
 	require_once 'php_script\sql_connect.php';
 	$conn = sql_connect();
 	$log_sql="";

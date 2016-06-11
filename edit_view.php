@@ -6,6 +6,8 @@
 		require_once 'php_script\sql_connect.php';
 		$conn = sql_connect();
 
+
+
 		$log_sql="";
 		$first_name = "";
 		$last_name = "";

@@ -1,45 +1,39 @@
 <?php
 	$log_sql="";	
-	$best_phone = '';	
+	
 	//pagination	
 	$num_records_per_page = 5;
 	$first_page = 1;
-		
+	
+	if (!isset($_SESSION['page_active'])) {		
+		$_SESSION['page_active'] = 1; 
+		}		
+	
 	if (isset($_GET['page_active'])) {
-		$page_active =$_GET['page_active'];
-	}
-	else {
-		$page_active = 1; 
-	}	
+		$_SESSION['page_active'] =$_GET['page_active'];
+		}	
+
+
 	$sql1 = "SELECT id FROM contacts  WHERE users_id = " .$_SESSION['users_id'];
 		$res = mysqli_query($conn, $sql1);
 		$how_many_records = mysqli_num_rows($res);
 
 	if (mysqli_num_rows($res) !=  0){		
 		$last_page = ceil ($how_many_records /  $num_records_per_page);
-		if ($page_active < 1 ){
-			$page_active = 1;
+		if ($_SESSION['page_active'] < 1 ){
+			$_SESSION['page_active'] = 1;
 		}
-		if ($page_active > $last_page) {
-			$page_active = $last_page;
+		if ($_SESSION['page_active'] > $last_page) {
+			$_SESSION['page_active'] = $last_page;
 		}
-		$start_from = ($page_active-1) * $num_records_per_page; 
+		$start_from = ($_SESSION['page_active']-1) * $num_records_per_page; 
 		if ($how_many_records > $num_records_per_page){				
-			$next_page = ($page_active < $last_page)? $page_active + 1:'';
-			$next_page2 = ($page_active < $last_page-1)? $page_active + 2:'';
-			$pre_page = ($page_active > 1)?  $page_active - 1:'';
-			$pre_page2 = ($page_active > 2)? $page_active - 2:'';			
+			$next_page = ($_SESSION['page_active'] < $last_page)? $_SESSION['page_active'] + 1:'';
+			$next_page2 = ($_SESSION['page_active'] < $last_page-1)? $_SESSION['page_active'] + 2:'';
+			$pre_page = ($_SESSION['page_active'] > 1)?  $_SESSION['page_active'] - 1:'';
+			$pre_page2 = ($_SESSION['page_active'] > 2)? $_SESSION['page_active'] - 2:'';			
 		}	
-	// sort records	
-	// write contact records
-		//default_sort
-		/*$sort_l = 'ASC';
-		$sort_f=	'ASC';
-		$second_symbol_f = '--&#9660';
-		$second_sort_f = ''*/
 
-
-//default
 
 		if (!isset($_SESSION['cur_sort_l']) and !isset($_SESSION['cur_sort_f']) and !isset($_SESSION['cur_second_sort_l']) and !isset($_SESSION['cur_second_sort_f'])){
 			$_SESSION['cur_sort_l'] = 'DESC';	
@@ -47,106 +41,86 @@
 			$_SESSION['cur_second_sort_l'] = 'DESC';
 			$_SESSION['cur_second_sort_f'] = 'DESC';
 		}
-
-
-		
-		//$order_by_firstname = 'ASC';
-		//$order_by_lastname = 'ASC';
-
-
-			
-//first field
-	if (isset($_GET['sort_l']) or isset($_GET['second_sort_f'])){
-		$first_field = 'last_name';
-		$second_field ='first_name';
-		
-		if (isset($_GET['sort_l'])) {
-			switch ($_SESSION['cur_sort_l']) {
-				case 'DESC':
-					$_SESSION['cur_sort_l'] = 'ASC';					
-			 		break;
-				case 'ASC':	
-					$_SESSION['cur_sort_l'] = 'DESC';					
-					break;
-			}
-			$order_by_lastname = $_SESSION['cur_sort_l'];
-			$_SESSION['cur_second_sort_l'] = 'ASC';
-			$order_by_firstname = $_SESSION['cur_second_sort_l'];
-			$second_symbol_f = '--&#9660';
-		}		
+//last-->first
+		if (isset($_GET['sort_l']) or isset($_GET['second_sort_f'])){
+			$first_field = 'last_name';
+			$second_field ='first_name';		
+			if (isset($_GET['sort_l'])) {
+				switch ($_SESSION['cur_sort_l']) {
+					case 'DESC':
+						$_SESSION['cur_sort_l'] = 'ASC';					
+				 		break;
+					case 'ASC':	
+						$_SESSION['cur_sort_l'] = 'DESC';					
+						break;
+				}
+				$order_by_lastname = $_SESSION['cur_sort_l'];
+				$_SESSION['cur_second_sort_l'] = 'ASC';
+				$order_by_firstname = $_SESSION['cur_second_sort_l'];
+				$second_symbol_f = '--&#9660';
+			}		
 //second field
-		if (isset($_GET['second_sort_f'])) {
-			$order_by_lastname = $_SESSION['cur_sort_l'];		
-			switch ($_SESSION['cur_second_sort_l']) {
-				case 'DESC':					
-					$_SESSION['cur_second_sort_l'] = 'ASC';
-					$order_by_firstname = $_SESSION['cur_second_sort_l'];
-					$second_symbol_f= '--&#9660';
-					break;				
-				case 'ASC':
-					$_SESSION['cur_second_sort_l'] = 'DESC';
-					$order_by_firstname = $_SESSION['cur_second_sort_l'];
-					$second_symbol_f= '--&#9650';
-					break;
-			}			
-		}
-		if ($_SESSION['cur_sort_l'] == 'ASC'){
-			$symbol_l= '&#9660';
-		}
-		if ($_SESSION['cur_sort_l'] == 'DESC'){
-			$symbol_l= '&#9650';
-		}
-		
-
-	}
-//1111111
-		//first field
-	if  (isset($_GET['second_sort_l']) or isset($_GET['sort_f'])){
-		$first_field = 'first_name';
-		$second_field ='last_name';				
-		if (isset($_GET['sort_f'])) {
-			switch ($_SESSION['cur_sort_f']) {
-				case 'DESC':
-					$symbol_f= '&#9660';
-					$_SESSION['cur_sort_f'] = 'ASC';					
-			 		break;
-				case 'ASC':
-					$symbol_f= '&#9650';
-					$_SESSION['cur_sort_f'] = 'DESC';					
-					break;
+			if (isset($_GET['second_sort_f'])) {
+				$order_by_lastname = $_SESSION['cur_sort_l'];		
+				switch ($_SESSION['cur_second_sort_l']) {
+					case 'DESC':					
+						$_SESSION['cur_second_sort_l'] = 'ASC';
+						$order_by_firstname = $_SESSION['cur_second_sort_l'];
+						$second_symbol_f= '--&#9660';
+						break;				
+					case 'ASC':
+						$_SESSION['cur_second_sort_l'] = 'DESC';
+						$order_by_firstname = $_SESSION['cur_second_sort_l'];
+						$second_symbol_f= '--&#9650';
+						break;
+				}			
 			}
-			$order_by_lastname = $_SESSION['cur_sort_f'];
+			if ($_SESSION['cur_sort_l'] == 'ASC'){
+				$symbol_l= '&#9660';
+			}
+			if ($_SESSION['cur_sort_l'] == 'DESC'){
+				$symbol_l= '&#9650';
+			}
+		}
+	//first-->last
+		if (isset($_GET['second_sort_l']) or isset($_GET['sort_f'])){
+			$first_field = 'first_name';
+			$second_field ='last_name';				
+			if (isset($_GET['sort_f'])) {
+				switch ($_SESSION['cur_sort_f']) {
+					case 'DESC':
+						$symbol_f= '&#9660';
+						$_SESSION['cur_sort_f'] = 'ASC';					
+				 		break;
+					case 'ASC':
+						$symbol_f= '&#9650';
+						$_SESSION['cur_sort_f'] = 'DESC';					
+						break;
+				}
+				$order_by_lastname = $_SESSION['cur_sort_f'];
 
-			$_SESSION['cur_second_sort_f'] = 'ASC';
-			$order_by_firstname = $_SESSION['cur_second_sort_f'];
-			$second_symbol_l = '--&#9660';
-		}		
+				$_SESSION['cur_second_sort_f'] = 'ASC';
+				$order_by_firstname = $_SESSION['cur_second_sort_f'];
+				$second_symbol_l = '--&#9660';
+			}		
 //second field
-		if (isset($_GET['second_sort_l'])) {			
-			$order_by_lastname = $_SESSION['cur_sort_f'];		
-			switch ($_SESSION['cur_second_sort_f']) {
-				case 'DESC':					
-					$_SESSION['cur_second_sort_f'] = 'ASC';
-					$order_by_firstname = $_SESSION['cur_second_sort_f'];
-					$second_symbol_l= '--&#9660';
-					break;				
-				case 'ASC':					
-					$_SESSION['cur_second_sort_f'] = 'DESC';
-					$order_by_firstname = $_SESSION['cur_second_sort_f'];
-					$second_symbol_l= '--&#9650';
-					break;
-			}			
-		}		
-	}
-
-
-
-		
-		
-	
-		
-
-	//default
+			if (isset($_GET['second_sort_l'])) {			
+				$order_by_lastname = $_SESSION['cur_sort_f'];		
+				switch ($_SESSION['cur_second_sort_f']) {
+					case 'DESC':					
+						$_SESSION['cur_second_sort_f'] = 'ASC';
+						$order_by_firstname = $_SESSION['cur_second_sort_f'];
+						$second_symbol_l= '--&#9660';
+						break;				
+					case 'ASC':					
+						$_SESSION['cur_second_sort_f'] = 'DESC';
+						$order_by_firstname = $_SESSION['cur_second_sort_f'];
+						$second_symbol_l= '--&#9650';
+						break;
+				}			
+			}		
+		}
+	//default 
 	if (!isset($order_by_firstname)){
 		$order_by_firstname = 'ASC';
 		$order_by_lastname = 'ASC';
@@ -166,13 +140,13 @@
 	}	
 	mysqli_close($conn);	
 
-	function view_pagination($how_many_records, $num_records_per_page, $pre_page, $pre_page, $pre_page2, $pre_page, $next_page, $next_page2, $next_page, $last_page, $page_active, $page){			
+	function view_pagination($how_many_records, $num_records_per_page, $pre_page, $pre_page, $pre_page2, $pre_page, $next_page, $next_page2, $next_page, $last_page,  $page){			
 			echo "
 			<div style='text-align:center'>
 				<a href='" . $page . " ?page_active=1'>First page</a>..
 				<a href='" . $page . "?page_active=" . $pre_page ."'>&#9664---</a>..
 				<a href='" . $page . "?page_active=" . $pre_page2 ."'>". $pre_page2."</a>..
-				<a href='" . $page . "?page_active=" . $pre_page ."'>". $pre_page."</a>..<span style='font-size:1.5em;'>". $page_active . "</span>..
+				<a href='" . $page . "?page_active=" . $pre_page ."'>". $pre_page."</a>..<span style='font-size:1.5em;'>". $_SESSION['page_active'] . "</span>..
 				<a href='" . $page . "?page_active=" . $next_page ."'>". $next_page."</a>..
 				<a href='" . $page . "?page_active=" .$next_page2 ."'>". $next_page2."</a>..
 				<a href='" . $page . "?page_active=" . $next_page ."'>---&#9654</a>..

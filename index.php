@@ -58,7 +58,7 @@
 				<?php
 					if ($how_many_records > $num_records_per_page){		
 						//php_script\view_contacts_list.php
-						view_pagination($how_many_records, $num_records_per_page, $pre_page, $pre_page, $pre_page2, $pre_page, $next_page, $next_page2, $next_page, $last_page, $page_active, 'index.php');
+						view_pagination($how_many_records, $num_records_per_page, $pre_page, $pre_page, $pre_page2, $pre_page, $next_page, $next_page2, $next_page, $last_page, 'index.php');
 					}
 				?>
 				</div>

@@ -36,6 +36,7 @@
 					</form>
 					<thead>
 						<tr>
+							<th><a href="index.php?sort_l=<?= $_SESSION['cur_sort_l'];?>">Last </a><?= (isset($symbol_l))? $symbol_l : '' ?> &nbsp;&nbsp; <a href="index.php?second_sort_l=<?= $_SESSION['cur_second_sort_f'];?>"><?= (isset($second_symbol_l))? $second_symbol_l : ''; ?></a></th>
 
 							<th><a href="index.php?sort_f=<?= $_SESSION['cur_sort_f'];?>">First </a><?= (isset($symbol_f))? $symbol_f : '' ?>  &nbsp;&nbsp; <a href="index.php?second_sort_f=<?= $_SESSION['cur_second_sort_l'];?>"><?= (isset($second_symbol_f))? $second_symbol_f : ''; ?></a></th>
 							<th>Email</th>

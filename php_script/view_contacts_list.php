@@ -1,7 +1,5 @@
 <?php
-	$log_sql="";
-	$symbol_f ='';
-	$symbol_l ='';
+	$log_sql="";	
 	$best_phone = '';	
 	//pagination	
 	$num_records_per_page = 5;
@@ -34,38 +32,134 @@
 		}	
 	// sort records	
 	// write contact records
-		$sort_l ='last_ascending';
-		$sort_f ='first_ascending';
-		if (isset($_GET["sort_l"]) or $sort_l =='last_ascending') {
-			$sort_l = (isset($_GET['sort_l'])) ? string_fix($_GET['sort_l'], $conn) : $sort_l;
-			if ($sort_l == 'last_ascending' ){
-				$sql =  "SELECT id, last_name, first_name, cell_phone, work_phone, home_phone, email, best_phone FROM  contacts, best_phone WHERE best_phone.id_contacts = contacts.id AND contacts.users_id =" .$_SESSION['users_id']. " ORDER BY last_name LIMIT $start_from, $num_records_per_page";
-				$symbol_l= '&#9660';
-				$sort_l = 'last_descending';
+		//default_sort
+		/*$sort_l = 'ASC';
+		$sort_f=	'ASC';
+		$second_symbol_f = '--&#9660';
+		$second_sort_f = ''*/
+
+
+//default
+
+		if (!isset($_SESSION['cur_sort_l']) and !isset($_SESSION['cur_sort_f']) and !isset($_SESSION['cur_second_sort_l']) and !isset($_SESSION['cur_second_sort_f'])){
+			$_SESSION['cur_sort_l'] = 'DESC';	
+			$_SESSION['cur_sort_f'] = 'DESC';	
+			$_SESSION['cur_second_sort_l'] = 'DESC';
+			$_SESSION['cur_second_sort_f'] = 'DESC';
+		}
+
+
+		
+		//$order_by_firstname = 'ASC';
+		//$order_by_lastname = 'ASC';
+
+
+			
+//first field
+	if (isset($_GET['sort_l']) or isset($_GET['second_sort_f'])){
+		$first_field = 'last_name';
+		$second_field ='first_name';
+		
+		if (isset($_GET['sort_l'])) {
+			switch ($_SESSION['cur_sort_l']) {
+				case 'DESC':
+					$_SESSION['cur_sort_l'] = 'ASC';					
+			 		break;
+				case 'ASC':	
+					$_SESSION['cur_sort_l'] = 'DESC';					
+					break;
 			}
-			else{
-				$sql = "SELECT id, last_name, first_name, cell_phone, work_phone, home_phone, email, best_phone FROM  contacts, best_phone WHERE best_phone.id_contacts = contacts.id AND contacts.users_id = " .$_SESSION['users_id']. " ORDER BY last_name DESC LIMIT $start_from, $num_records_per_page";
-				$symbol_l= '&#9650';
-				$sort_l = 'last_ascending';	
-			}
-		}	
-		if (isset($_GET["sort_f"])) {
-			$sort_f = string_fix($_GET['sort_f'], $conn);
-			if ($sort_f == 'first_ascending'){
-				$sql = "SELECT id, last_name, first_name, cell_phone, work_phone, home_phone, email, best_phone FROM  contacts, best_phone WHERE best_phone.id_contacts = contacts.id AND contacts.users_id = " .$_SESSION['users_id']. " ORDER BY first_name LIMIT $start_from, $num_records_per_page";
-				$symbol_f= "&#9660";
-				$sort_f = 'first_descending';
-			}
-			else{
-				$sql = "SELECT id, last_name, first_name, cell_phone, work_phone, home_phone, email, best_phone FROM  contacts, best_phone WHERE best_phone.id_contacts = contacts.id AND contacts.users_id = " .$_SESSION['users_id']. " ORDER BY first_name DESC LIMIT $start_from, $num_records_per_page";
-				$symbol_f= '&#9650';
-				$sort_f = 'first_ascending';
-			}
+			$order_by_lastname = $_SESSION['cur_sort_l'];
+			$_SESSION['cur_second_sort_l'] = 'ASC';
+			$order_by_firstname = $_SESSION['cur_second_sort_l'];
+			$second_symbol_f = '--&#9660';
 		}		
+//second field
+		if (isset($_GET['second_sort_f'])) {
+			$order_by_lastname = $_SESSION['cur_sort_l'];		
+			switch ($_SESSION['cur_second_sort_l']) {
+				case 'DESC':					
+					$_SESSION['cur_second_sort_l'] = 'ASC';
+					$order_by_firstname = $_SESSION['cur_second_sort_l'];
+					$second_symbol_f= '--&#9660';
+					break;				
+				case 'ASC':
+					$_SESSION['cur_second_sort_l'] = 'DESC';
+					$order_by_firstname = $_SESSION['cur_second_sort_l'];
+					$second_symbol_f= '--&#9650';
+					break;
+			}			
+		}
+		if ($_SESSION['cur_sort_l'] == 'ASC'){
+			$symbol_l= '&#9660';
+		}
+		if ($_SESSION['cur_sort_l'] == 'DESC'){
+			$symbol_l= '&#9650';
+		}
+		
+
+	}
+//1111111
+		//first field
+	if  (isset($_GET['second_sort_l']) or isset($_GET['sort_f'])){
+		$first_field = 'first_name';
+		$second_field ='last_name';				
+		if (isset($_GET['sort_f'])) {
+			switch ($_SESSION['cur_sort_f']) {
+				case 'DESC':
+					$symbol_f= '&#9660';
+					$_SESSION['cur_sort_f'] = 'ASC';					
+			 		break;
+				case 'ASC':
+					$symbol_f= '&#9650';
+					$_SESSION['cur_sort_f'] = 'DESC';					
+					break;
+			}
+			$order_by_lastname = $_SESSION['cur_sort_f'];
+
+			$_SESSION['cur_second_sort_f'] = 'ASC';
+			$order_by_firstname = $_SESSION['cur_second_sort_f'];
+			$second_symbol_l = '--&#9660';
+		}		
+//second field
+		if (isset($_GET['second_sort_l'])) {			
+			$order_by_lastname = $_SESSION['cur_sort_f'];		
+			switch ($_SESSION['cur_second_sort_f']) {
+				case 'DESC':					
+					$_SESSION['cur_second_sort_f'] = 'ASC';
+					$order_by_firstname = $_SESSION['cur_second_sort_f'];
+					$second_symbol_l= '--&#9660';
+					break;				
+				case 'ASC':					
+					$_SESSION['cur_second_sort_f'] = 'DESC';
+					$order_by_firstname = $_SESSION['cur_second_sort_f'];
+					$second_symbol_l= '--&#9650';
+					break;
+			}			
+		}		
+	}
+
+
+
+		
+		
+	
+		
+
+	//default
+	if (!isset($order_by_firstname)){
+		$order_by_firstname = 'ASC';
+		$order_by_lastname = 'ASC';
+		$first_field = 'last_name';
+		$second_field ='first_name';
+		$symbol_l= '&#9660';
+		$second_symbol_f = '--&#9660';
+	}
+		$sql =  "SELECT id, last_name, first_name, cell_phone, work_phone, home_phone, email, best_phone FROM  contacts, best_phone WHERE best_phone.id_contacts = contacts.id AND contacts.users_id =" .$_SESSION['users_id']. " ORDER BY $first_field $order_by_lastname , $second_field $order_by_firstname  LIMIT $start_from, $num_records_per_page";
 		$result = mysqli_query($conn, $sql);
 		if (!$result) {
 			$log_sql =  "Помилка: " . mysqli_error($conn);			
-			echo $log_sql;
+			//echo $log_sql;
 			header ("location:error.php");
 			exit;
 		}

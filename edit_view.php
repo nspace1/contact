@@ -122,6 +122,10 @@
 			}
 		}		
 		$validate = validate_add_edit($first_name, $last_name, $email, $home_phone, $work_phone, $cell_phone, $address1, $address2, $city, $state,	$zip, $country,	$birth_day, $conn);
+
+		$tr = (isset($validate['Email'])) ?  
+		$validate['Email'] : '111';
+		echo $tr;
 		
 		if ($validate == 'true'){
 	
@@ -201,7 +205,7 @@
 						</tr>
 						<tr>
 							<td>Email</td><td></td>
-							<td><input type="text" name="email"  value="<?php echo $email; ?>"></td>
+							<td><input type="text" name="email" placeholder="<?=isset($fail['Email'])? $fail['Email'] : '';?>" value="<?php echo $email; ?>"></td>
 						</tr>
 						<tr>
 							<td>Home</td>

@@ -42,13 +42,6 @@
 		}
 
 
-
-
-
-
-
-
-
 		if (isset($_POST['last']) or isset($_POST['second_sort_f'])){
 			$first_field = 'last_name';
 			$second_field ='first_name';		
@@ -131,8 +124,7 @@
 
 		if (isset($_POST['check_all'])){
 			if (!isset($_SESSION['cheked_all'])){
-				$_SESSION['cheked_all'] = '';
-				echo '1';
+				$_SESSION['cheked_all'] = '';				
 			}
 			switch ( $_SESSION['cheked_all'] ) {
 				case 'checkAll':					
@@ -150,72 +142,37 @@
 		}
 
 
-
-
-
-		if (isset($_POST['second_sort_l']) or isset($_POST['first']) or isset($_POST['last']) or isset($_POST['second_sort_f'])){
-			
+		if (isset($_POST['second_sort_l']) or isset($_POST['first']) or isset($_POST['last']) or isset($_POST['second_sort_f'])){			
 			foreach ($_POST as $key => $value) {
 				$key = explode('=', $key);
 				if ($key[0] == 'id'){			    	
-			    	$cheked[] = $key[1];			    			    	
-				    
+			    	$cheked[] = $key[1];
 			    }			    		    	
 			}
 
 			if (isset($_SESSION['view_id']) and isset($_SESSION['cheked']) and isset($cheked)){
-						$list_id = array_intersect($_SESSION['view_id'], $_SESSION['cheked']);
-						echo '$list_id' .var_dump($list_id);
+						$list_id = array_intersect($_SESSION['view_id'], $_SESSION['cheked']);						
 						foreach ($list_id as $key => $value) {
 							if (!in_array($value, $cheked)){
-								echo 'delid' . $value;
+								
 								unset($_SESSION['cheked'][$key]);
+							}
+						foreach ($_SESSION['view_id'] as $key => $value) {
+							
+								
 							}
 						}  	
 				    }
-			unset($_SESSION['view_id']);
+			
 		
 			if (isset($_SESSION['cheked']) and isset($cheked)){			
 				$_SESSION['cheked'] = $_SESSION['cheked'] + $cheked;
-
-				foreach ($_SESSION['cheked'] as $key => $value) {
-					echo "<br>1". $key . '--'.$value;
-				}
-				foreach ($cheked as $key => $value) {
-					echo "<br>2". $key . '--'.$value;
-				}
-					foreach ($_SESSION['cheked'] as $key => $value) {
-					echo "<br>3". $key . '--'.$value;
-				}
-
 			}
 			elseif (isset($cheked)){
 				$_SESSION['cheked'] = $cheked;
 			
 			}
-			
-
-
-			
-
 		}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //last-->first
@@ -294,8 +251,15 @@
 						$order_by_firstname = $_SESSION['cur_second_sort_f'];
 						$second_symbol_l= '--&#9650';
 						break;
-				}			
-			}		
+				}	
+				if ($_SESSION['cur_sort_f'] == 'ASC'){
+				$symbol_f= '&#9660';
+			}
+			if ($_SESSION['cur_sort_f'] == 'DESC'){
+				$symbol_f= '&#9650';
+			}				
+			}
+			
 		}
 	//default 
 	if (!isset($order_by_firstname)){
@@ -372,12 +336,8 @@
 	}
 
 	function view_contacts_add_contact_from_list_php($result){
-		if (isset($_SESSION['cheked'])){
-				foreach ($_SESSION['cheked']  as $key => $value) {
-					echo  '--' .$value;
-				}
-			}
 		
+		unset($_SESSION['view_id']);
 		while ($row = mysqli_fetch_assoc($result)) { 
 				$best_phone = '';
 				$checked ='';
@@ -393,7 +353,7 @@
 			if (isset($_SESSION['cheked'])){				
 				if  (in_array($row['id'], $_SESSION['cheked'])){
 					$checked = 'checked';
-					echo $row['id'] . $checked;	
+				
 				}				
 			}
 			$_SESSION['view_id'][] = $row['id'];

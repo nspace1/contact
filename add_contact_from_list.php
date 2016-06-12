@@ -56,7 +56,7 @@
 							<thead>
 								<tr><th>
 										all										
-										<input type="image" name="check_all" value="check_all" src="img\unchecked.png">
+										<input type="image" name="check_all" value="check_all" src="<?= $_SESSION['cheked_all'] == '' ? 'img\checked.png' : 'img\unchecked.png'?>">
 									</th>
 																
 									

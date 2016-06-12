@@ -1,6 +1,5 @@
 <?php
-	$log_sql="";	
-	
+		
 	//pagination	
 	$num_records_per_page = 5;
 	$first_page = 1;
@@ -36,11 +35,189 @@
 
 
 		if (!isset($_SESSION['cur_sort_l']) and !isset($_SESSION['cur_sort_f']) and !isset($_SESSION['cur_second_sort_l']) and !isset($_SESSION['cur_second_sort_f'])){
-			$_SESSION['cur_sort_l'] = 'DESC';	
+			$_SESSION['cur_sort_l'] = 'ASC';	
 			$_SESSION['cur_sort_f'] = 'DESC';	
 			$_SESSION['cur_second_sort_l'] = 'DESC';
 			$_SESSION['cur_second_sort_f'] = 'DESC';
 		}
+
+
+
+
+
+
+
+
+
+		if (isset($_POST['last']) or isset($_POST['second_sort_f'])){
+			$first_field = 'last_name';
+			$second_field ='first_name';		
+			if (isset($_POST['last'])) {
+				switch ($_SESSION['cur_sort_l']) {
+					case 'DESC':
+						$_SESSION['cur_sort_l'] = 'ASC';					
+				 		break;
+					case 'ASC':	
+						$_SESSION['cur_sort_l'] = 'DESC';					
+						break;
+				}
+				$order_by_lastname = $_SESSION['cur_sort_l'];
+				$_SESSION['cur_second_sort_l'] = 'ASC';
+				$order_by_firstname = $_SESSION['cur_second_sort_l'];
+				$second_symbol_f = '--&#9660';
+			}		
+//second field
+			if (isset($_POST['second_sort_f'])) {
+				$order_by_lastname = $_SESSION['cur_sort_l'];		
+				switch ($_SESSION['cur_second_sort_l']) {
+					case 'DESC':					
+						$_SESSION['cur_second_sort_l'] = 'ASC';
+						$order_by_firstname = $_SESSION['cur_second_sort_l'];
+						$second_symbol_f= '--&#9660';
+						break;				
+					case 'ASC':
+						$_SESSION['cur_second_sort_l'] = 'DESC';
+						$order_by_firstname = $_SESSION['cur_second_sort_l'];
+						$second_symbol_f= '--&#9650';
+						break;
+				}			
+			}
+			if ($_SESSION['cur_sort_l'] == 'ASC'){
+				$symbol_l= '&#9660';
+			}
+			if ($_SESSION['cur_sort_l'] == 'DESC'){
+				$symbol_l= '&#9650';
+			}
+		}
+
+	//first-->last
+		if (isset($_POST['second_sort_l']) or isset($_POST['first'])){
+			$first_field = 'first_name';
+			$second_field ='last_name';				
+			if (isset($_POST['first'])) {
+				switch ($_SESSION['cur_sort_f']) {
+					case 'DESC':
+						$symbol_f= '&#9660';
+						$_SESSION['cur_sort_f'] = 'ASC';					
+				 		break;
+					case 'ASC':
+						$symbol_f= '&#9650';
+						$_SESSION['cur_sort_f'] = 'DESC';					
+						break;
+				}
+				$order_by_lastname = $_SESSION['cur_sort_f'];
+
+				$_SESSION['cur_second_sort_f'] = 'ASC';
+				$order_by_firstname = $_SESSION['cur_second_sort_f'];
+				$second_symbol_l = '--&#9660';
+			}		
+//second field
+			if (isset($_POST['second_sort_l'])) {			
+				$order_by_lastname = $_SESSION['cur_sort_f'];		
+				switch ($_SESSION['cur_second_sort_f']) {
+					case 'DESC':					
+						$_SESSION['cur_second_sort_f'] = 'ASC';
+						$order_by_firstname = $_SESSION['cur_second_sort_f'];
+						$second_symbol_l= '--&#9660';
+						break;				
+					case 'ASC':					
+						$_SESSION['cur_second_sort_f'] = 'DESC';
+						$order_by_firstname = $_SESSION['cur_second_sort_f'];
+						$second_symbol_l= '--&#9650';
+						break;
+				}			
+			}		
+		}
+
+		if (isset($_POST['check_all'])){
+			if (!isset($_SESSION['cheked_all'])){
+				$_SESSION['cheked_all'] = '';
+				echo '1';
+			}
+			switch ( $_SESSION['cheked_all'] ) {
+				case 'checkAll':					
+					while ($row = mysqli_fetch_assoc($res)) {
+						$chek_all[] = $row['id'];
+					}
+					$_SESSION['cheked'] = $chek_all;
+					$_SESSION['cheked_all'] = '';
+					break;
+				case '':				
+					unset($_SESSION['cheked']);
+					$_SESSION['cheked_all'] = 'checkAll';
+					break;
+			}	
+		}
+
+
+
+
+
+		if (isset($_POST['second_sort_l']) or isset($_POST['first']) or isset($_POST['last']) or isset($_POST['second_sort_f'])){
+			
+			foreach ($_POST as $key => $value) {
+				$key = explode('=', $key);
+				if ($key[0] == 'id'){			    	
+			    	$cheked[] = $key[1];			    			    	
+				    
+			    }			    		    	
+			}
+
+			if (isset($_SESSION['view_id']) and isset($_SESSION['cheked']) and isset($cheked)){
+						$list_id = array_intersect($_SESSION['view_id'], $_SESSION['cheked']);
+						echo '$list_id' .var_dump($list_id);
+						foreach ($list_id as $key => $value) {
+							if (!in_array($value, $cheked)){
+								echo 'delid' . $value;
+								unset($_SESSION['cheked'][$key]);
+							}
+						}  	
+				    }
+			unset($_SESSION['view_id']);
+		
+			if (isset($_SESSION['cheked']) and isset($cheked)){			
+				$_SESSION['cheked'] = $_SESSION['cheked'] + $cheked;
+
+				foreach ($_SESSION['cheked'] as $key => $value) {
+					echo "<br>1". $key . '--'.$value;
+				}
+				foreach ($cheked as $key => $value) {
+					echo "<br>2". $key . '--'.$value;
+				}
+					foreach ($_SESSION['cheked'] as $key => $value) {
+					echo "<br>3". $key . '--'.$value;
+				}
+
+			}
+			elseif (isset($cheked)){
+				$_SESSION['cheked'] = $cheked;
+			
+			}
+			
+
+
+			
+
+		}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //last-->first
 		if (isset($_GET['sort_l']) or isset($_GET['second_sort_f'])){
 			$first_field = 'last_name';
@@ -194,9 +371,16 @@
 		}
 	}
 
-	function view_contacts_add_contact_from_list_php($result, $best_phone){
-		$i=1;
+	function view_contacts_add_contact_from_list_php($result){
+		if (isset($_SESSION['cheked'])){
+				foreach ($_SESSION['cheked']  as $key => $value) {
+					echo  '--' .$value;
+				}
+			}
+		
 		while ($row = mysqli_fetch_assoc($result)) { 
+				$best_phone = '';
+				$checked ='';
 			if ($row["best_phone"] == 'cell'){
 				$best_phone = $row["cell_phone"];
 			}
@@ -205,15 +389,23 @@
 			}
 				elseif ($row["best_phone"] == 'home'){
 				$best_phone = $row["home_phone"];
+			}	
+			if (isset($_SESSION['cheked'])){				
+				if  (in_array($row['id'], $_SESSION['cheked'])){
+					$checked = 'checked';
+					echo $row['id'] . $checked;	
+				}				
 			}
+			$_SESSION['view_id'][] = $row['id'];
+			
 			echo 
 				"<tr>
-					<td><input type='checkbox' name=". $i ."  value=". $row["email"] ."></td>
+					<td><input type='checkbox' name=id=". $row['id'] ."  value='". $row['email'] ."'"; echo !empty($checked) ? 'checked' : ''; echo"  ></td>
 					<td>" . $row["last_name"] . "</td>
 					<td>".  $row["first_name"] . "</td>
 					<td>" . $row["email"] . "</td>
 					<td>" . $best_phone ."</td>
 				</tr>";
-			++$i;
+			
 		} 
 	}

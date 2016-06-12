@@ -10,9 +10,7 @@
 	}*/
 	require_once 'php_script\sql_connect.php';
 	$conn = sql_connect();
-	$log_sql="";
-	$sql="";
-	$fail="";
+		
 //Login
 	if (isset($_POST["login"]) && isset($_POST["password"])){
 	 	$login = string_fix($_POST['login'], $conn);
@@ -37,7 +35,7 @@
 			 	}
 			 	else{
 			 		$log_sql =  "Wrong password or login" . "<br>" . mysqli_error($conn);
-			 		$fail['error_login'] = "Wrong password or login<br>";
+			 		$error['error_login'] = "Wrong password or login";
 			 	}
 			}			
 		}		
@@ -73,8 +71,9 @@
 				<input type="text" name="login" placeholder="<?= isset($fail['login']) ? $fail['login'] : 'login' ?>" >
 				<input type="password" name="password" placeholder="<?= isset($fail['password']) ? $fail['password'] : 'password' ?>">
 				<input type="submit" value="Sing in"><br><br>
-				<span class="form_valid_text"><?= isset($fail['error_login']) ? $fail['error_login'] : ''; ?></span>
-			</form>
+				
+			</form><br>
+				<span class="form_valid_text"><?= isset($error['error_login']) ? $error['error_login'] : ''; ?></span></p>
 			</div>
 			<div class="form">
 				<a href="registration.php" style="color:white"><h2>Registration</h2></a>

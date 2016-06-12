@@ -159,6 +159,17 @@ box-shadow: 10px 10px 5px #888888;
 .form input, .msg input {
 	color: black;
 	border-radius: 6px;
+} 
+/*.placeholder_red input::-webkit-input-placeholder{
+	color: red;
+}*/
+
+.button_to_link {
+    background:none;
+     border:none; 
+     padding:0;       
+     text-decoration:underline;
+     cursor:pointer;
 }
 
 .form_valid_text {

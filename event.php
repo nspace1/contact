@@ -5,35 +5,14 @@
 	require_once 'php_script\validation.php';
 	require_once 'php_script\sql_connect.php';
 	$conn = sql_connect();
-	$to="";
-	$log_sql="";
-	$msg_add_mail="";
-	$msg_visibility="visibility: hidden";
-	$send_address="";
-// list mail in field To:
-	if (isset($_POST['ACCEPT'])){
-		if (isset($_POST['checkAll'])){
-			$sql = "SELECT email FROM contacts WHERE users_id = " .$_SESSION['users_id'];
-			$result = mysqli_query($conn, $sql);
-			if (! $result) {				
-				header ("location:error.php");
-				exit;
-			}
-			while ($row = mysqli_fetch_assoc($result)) {
-				$to .= $row["email"] . ", ";
-			}
-		}
-		else {
-			foreach ($_POST as $key => $value) {
-				if ($value != "ACCEPT" and $value != "checkAll"){			    	
-			    	$to =$to . $value . ", ";
-			    }
-			}
-		}
-		$to = substr($to,0,-2);
-	}
 
+	$msg_add_mail="";	
+	$send_address="";
+	
 	if (isset($_POST['send'])){
+		unset($_SESSION['cheked']);
+		unset($_SESSION['cheked_all']);
+		unset($_SESSION['view_id']);
 //Add not exist email and insert event_sendmail
 		$to1 = string_fix($_POST['to'], $conn);
 		$tok = strtok($to1, " ,\n\t");
@@ -44,8 +23,7 @@
     			$row = mysqli_fetch_assoc($result);
     			$id_contacts = $row['id'];    			
 			}
-			else {
-				$log_sql =$log_sql . "  no_ " .$tok;
+			else {				
 				$msg_add_mail[] = $tok;
 			}
 //list mail to send
@@ -55,8 +33,9 @@
 	}
 //insert not exist email
 	if(isset($_POST['add_ev_msg'])) {			
-		foreach ($_POST as $key => $value) {
-		    if ($value != "add_ev_msg" ){
+		foreach ($_POST as $key  => $value) {
+			
+		    if ($value != "add_ev_msg" and $value != "Add to contact mananger"  ){
 		    	$email = strtolower(string_fix($_POST["$key"], $conn));
 		    	$sql = "INSERT INTO contacts (email, users_id)
 				VALUES ('$email',".$_SESSION['users_id'] . ")";
@@ -72,7 +51,7 @@
 				}
 				else {
 					$log_sql =  "error" . $sql . "<br>" . mysqli_error($conn);
-					echo $log_sql;
+					
 					header ("location:error.php");
 					exit;
 				}		
@@ -88,22 +67,27 @@
 	<main>
 		<div class="container">
 			<div id='content_view_ev'>
-				<div class="msg" style="<?php echo ($msg_add_mail !== "") ? 'visibility: visible':'visibility: hidden'; ?>">
-					<small>This address is not in your contact mananger</small><br><br>
-					<form action="event.php" method="post" id="msg_form">
-						<?php 
-							$i = 1;
-							foreach ($msg_add_mail as $value ) {
-								echo "<input type='checkbox' name=". $i ."  value=". $value .">" . $value . "<br>";
-								++$i;
-							}
-						?>
-						<input type='hidden' name='add_ev_msg' value='add_ev_msg'>
-						<input type="submit" name="add_email"  id="add_email"  style="visibility: hidden;" ><br>
-						<a href="" onclick="document.getElementById('msg_form').submit('add_email'); return false;">Add to contact mananger</a><br>
-						<a href="event.php" >Go to My Albums/Events</a>
-					</form>
-				</div>
+			<?php
+				if ($msg_add_mail !== "") {
+					echo
+					"<div class='msg'>
+						<small>This address is not in your contact mananger</small><br><br>
+						<form action='event.php' method='post' id='msg_form'>";							
+								$i = 1;
+								foreach ($msg_add_mail as $value ) {
+									echo "<input type='checkbox' name=". $i ."  value=". $value .">" . $value . "<br>";
+									++$i;
+								}
+							?>
+							<input type='hidden' name='add_ev_msg' value='add_ev_msg'>
+							<br>
+							<input  type="submit" name="add_email"  id="add_email" value='Add to contact mananger' class='button_to_link'> 
+							<a href="event.php" >Go to My Albums/Events</a>
+						</form>
+					</div>
+				<?php	
+				}
+				?>
 				<span style='text-align: right'><h3>EVENT</h3></span>
 				<form name="event_form" action="event.php" method="post">
 					<table>
@@ -112,7 +96,7 @@
 								<a href="add_contact_from_list.php">To:</a>
 							</td>
 							<td>
-									<input  type="email" multiple name="to" cols="100" value="<?php echo $to; ?>" style="width:100%">
+								<input  type="email" multiple name="to" cols="100" value="<?= isset($_GET['to']) ? $_GET['to'] : '' ?>" style="width:100%">
 							</td> 
 						</tr>
 						<tr>

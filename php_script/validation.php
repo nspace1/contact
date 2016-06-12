@@ -2,14 +2,18 @@
 
 // validate form login
 	function validate_user($username, $password, $confirm_password, $conn){				
-			$error="";
+			$t = 'true';
 			$error['username'] = validate_username($username,  $conn);	
 			$error['password'] = validate_password($password);				
 			if ($confirm_password != $password) {			
-			$error['equal']	= "Confirm Password and Password not equal<br>";
-			}		
-			
-			if ($error == ""){
+			$error['equal']	= "Confirm Password and Password not equal";
+			}					
+			foreach ($error as $key => $value) {
+				if (!empty($value)) {
+					$t = 'false';
+				}
+			}
+			if ($t == 'true'){
 				return true;
 			}
 			else{
@@ -35,8 +39,7 @@
 	}
 
 	function validate_add_edit($first_name, $last_name, $email, $home_phone, $work_phone, $cell_phone, $address1, $address2, $city, $state,	$zip, $country,	$birth_day, $conn){
-
-		$error="";
+		$t = 'true';		
 		$error['first'] = validate_text_30($first_name);
 		$error['last']= validate_text_30($last_name);
 		$error['email']= validate_email($email);
@@ -50,15 +53,18 @@
 		$error['zip']= validate_zip($zip);
 		$error['country']= validate_text_30($country);
 		$error['birthday']= validate_birth_day($birth_day);
-
-		
-					
-			if ($error == ""){
-				return true;
+		foreach ($error as $key => $value) {
+			if (!empty($value)) {
+				$t = 'false';
+				break;
 			}
-			else{
-				return $error;
-			}
+		}
+		if ($t == 'true'){
+			return true;
+		}
+		else{
+			return $error;
+		}
 	}
 
 
@@ -86,15 +92,15 @@
 		if (preg_match('/[^0-9.-]/', $field)){
 			return "The field can contain only numbers";
 		}
-	}
-
+	}                                                                                                                                                     
+                             
 	function validate_phone($field) {
 		if (strlen($field) > 20){
 			return "Field is limited to 20 characters";
 		}
 		if (preg_match('/[^0-9-+]+$/', $field)){
 			return "The field can contain only numbers";
-		}
+		}		
 	}
 
 
@@ -149,7 +155,6 @@
 		else if (!((strpos($field, ".") > 0) &&	(strpos($field, "@") > 0)) || preg_match("/[^a-zA-Z0-9.@_-]/", $field)){
 			return "Email has a wrong format";
 		}
-		return "";
 	}
 
 

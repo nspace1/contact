@@ -9,25 +9,9 @@
 
 
 		$log_sql="";
-		$first_name = "";
-		$last_name = "";
-		$email = "";
-		$home_phone = "";
-		$work_phone = "";
-		$cell_phone = "";
-		$best_phone = "";
-		$address1 = "";
-		$address2 = "";
-		$city = "";
-		$state = "";
-		$zip = "";
-		$country = "";
-		$birth_day = "";
-		$home_check = "";
-		$work_check = "";
-		$cell_check = "";
+		
 		$form_button = 'add';
-		$validate='';		
+			
 
 //edit record in fields
 	if (isset($_POST['id']) && isset($_POST['edit_view'])) {
@@ -123,9 +107,8 @@
 		}		
 		$validate = validate_add_edit($first_name, $last_name, $email, $home_phone, $work_phone, $cell_phone, $address1, $address2, $city, $state,	$zip, $country,	$birth_day, $conn);
 
-		$tr = (isset($validate['Email'])) ?  
-		$validate['Email'] : '111';
-		echo $tr;
+		
+		echo $validate['email'];
 		
 		if ($validate == 'true'){
 	
@@ -197,15 +180,15 @@
 					<tbody>
 						<tr>
 							<td>First</td><td></td>
-							<td><input type="text" name="first_name"   value="<?php echo $first_name; ?>"></td>
+							<td><input type="text" name="first_name"   placeholder="<?= isset($validate['first'])? $validate['first'] : '';?>" value="<?= isset($first_name) ? $first_name : ''; ?>"></td>
 						</tr>
 						<tr>
 							<td>Last</td><td></td>
-							<td><input type="text" name="last_name"  value="<?php echo $last_name; ?>"></td>
+							<td><input type="text" name="last_name"  placeholder="<?= isset($validate['last'])? $validate['last'] : '';?>" value="<?= isset($last_name) ? $last_name : ''; ?>"></td>
 						</tr>
 						<tr>
 							<td>Email</td><td></td>
-							<td><input type="text" name="email" placeholder="<?=isset($fail['Email'])? $fail['Email'] : '';?>" value="<?php echo $email; ?>"></td>
+							<td><input type="text" name="email" placeholder="<?= isset($validate['email'])? $validate['email'] : '';?>" value="<?= isset($email) ? $email : ''; ?>"></td>
 						</tr>
 						<tr>
 							<td>Home</td>
@@ -254,12 +237,7 @@
 							<td>								
 								<input type='submit' name="<?php echo $form_button; ?>" value="<?php echo $form_button; ?>">								
 								<input type="hidden" name="id_edit" value="<?php echo $id; ?>"></td><td></td><td></td>
-						</tr>	
-						<tr>
-							<td colspan='3'>
-								<span class="form_valid_text"><?php echo $validate; ?></span>
-							</td>
-						</tr>			
+						</tr>								
 					</tbody>
 					</table>
 				</form>

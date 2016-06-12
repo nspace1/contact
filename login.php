@@ -17,8 +17,9 @@
 	if (isset($_POST["login"]) && isset($_POST["password"])){
 	 	$login = string_fix($_POST['login'], $conn);
 	 	$password = md5(trim(string_fix($_POST['password'], $conn)));
- 		$fail = validate_login($login);
-		$fail .= validate_password(string_fix($_POST['password'], $conn));
+
+	 	$fail = validate_login_page($login, $_POST['password'], $conn);
+ 		
 		
 		if ($fail == "") {
 		 	$sql = "SELECT id, username FROM users WHERE username='$login' and password ='$password'";
@@ -39,10 +40,15 @@
 			 	}
 			 	else{
 			 		$log_sql =  "Wrong password or login" . "<br>" . mysqli_error($conn);
-			 		$fail .= "Wrong password or login<br>";
+			 		$fail['error_login'] = "Wrong password or login<br>";
 			 	}
 			}			
 		}		
+	}
+
+	foreach ($fail as $key => $value) {
+		echo '<br>'. $key. $value;
+		# code...
 	}
 
 //logout
@@ -73,10 +79,10 @@
 			</div>	
 			<div class="form">
 				<form class="login" action="login.php" method="post">
-				<input type="text" name="login" placeholder="Login" required>
-				<input type="password" name="password" placeholder="password" required>
+				<input type="text" name="login" placeholder="<?= isset($fail['login']) ? $fail['login'] : 'login' ?>" >
+				<input type="password" name="password" placeholder="<?= isset($fail['password']) ? $fail['password'] : 'password' ?>">
 				<input type="submit" value="Sing in"><br><br>
-				<span class="form_valid_text"><?php echo $fail; ?></span>
+				<span class="form_valid_text"><?= isset($fail['error_login']) ? $fail['error_login'] : ''; ?></span>
 			</form>
 			</div>
 			<div class="form">

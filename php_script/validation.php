@@ -2,51 +2,57 @@
 
 // validate form login
 	function validate_user($username, $password, $confirm_password, $conn){				
-			$fail="";
-			$error['username'] = validate_username($username,  $conn);
+			$error="";
+			$error['username'] = validate_username($username,  $conn);	
 			$error['password'] = validate_password($password);				
 			if ($confirm_password != $password) {			
-				$fail .= "Confirm Password and Password not equal<br>";
+			$error['equal']	= "Confirm Password and Password not equal<br>";
 			}		
-			foreach ($error as $value) {
-		       	$fail .= $value;
-		    }
-			if ($fail == ""){
+			
+			if ($error == ""){
 				return true;
 			}
 			else{
-				return $fail;
+				return $error;
+			}
+	}
+
+	function validate_login_page($login, $password, $conn){				
+			$error="";
+			$error['login'] = validate_username($login,  $conn);			
+			$error['password'] = validate_password($password);						
+			if ($error == ""){
+				return true;
+			}
+			else{
+				return $error;
 			}
 	}
 
 	function validate_add_edit($first_name, $last_name, $email, $home_phone, $work_phone, $cell_phone, $address1, $address2, $city, $state,	$zip, $country,	$birth_day, $conn){
 
-		$fail="";
-		$error['First'] = validate_text_30($first_name);
-		$error['Last']= validate_text_30($last_name);
-		$error['Email']= validate_email($email);
-		$error['Home']= validate_phone($home_phone);
-		$error['Work']= validate_phone($work_phone);
-		$error['Cell']= validate_phone($cell_phone);
-		$error['Address1'] = validate_text_30($address1);
-		$error['Address2']= validate_text_30($address2);
-		$error['City']= validate_text_30($city);
-		$error['State']= validate_text_30($state);
-		$error['ZIP']= validate_zip($zip);
-		$error['Country']= validate_text_30($country);
-		$error['Birthday']= validate_birth_day($birth_day);
+		$error="";
+		$error['first'] = validate_text_30($first_name);
+		$error['last']= validate_text_30($last_name);
+		$error['email']= validate_email($email);
+		$error['home']= validate_phone($home_phone);
+		$error['work']= validate_phone($work_phone);
+		$error['cell']= validate_phone($cell_phone);
+		$error['address1'] = validate_text_30($address1);
+		$error['address2']= validate_text_30($address2);
+		$error['city']= validate_text_30($city);
+		$error['state']= validate_text_30($state);
+		$error['zip']= validate_zip($zip);
+		$error['country']= validate_text_30($country);
+		$error['birthday']= validate_birth_day($birth_day);
 
-		foreach ($error as $key => $value) {
-			if ($value != '') {
-			$fail .=$key. ':  ';
-			$fail .=$value . '<br>';
-			}
-		}			
-			if ($fail == ""){
+		
+					
+			if ($error == ""){
 				return true;
 			}
 			else{
-				return $fail;
+				return $error;
 			}
 	}
 
@@ -91,50 +97,49 @@
 
 	function validate_username($field, $conn) {
 		if ($field == "") {
-			return "Please enter Username<br>";
+			return "Please enter Username";
 		}
 		else if (strlen($field) < 3) {
 
-			return "Username повинен містити > 3 символів<br>";
+			return "Username повинен містити > 3 символів";
 		}
 		else if (preg_match("/[^a-zA-Z0-9_-]/", $field)){
-			return "Username може містити букви, цифри, -, _ <br>";
+			return "Username може містити букви, цифри, -, _ ";
 		}		
 		$sql= "SELECT username FROM users WHERE username='$field'";
 		    $result=mysqli_query($conn, $sql);
     		if   (mysqli_num_rows($result)) {
-    			 return "Username is exist<br>";
-    		}
-	 	return "";
+    			 return "Username is exist";
+    		}	 	
 	}
 	function validate_login($field) {
 		if ($field == "") {
-			return "Please enter Username<br>";
+			return "Please enter Username";
 		}
 		else if (strlen($field) < 3) {
 
-			return "Username повинен містити > 3 символів<br>";
+			return "Please enter > 3 chars";
 		}
 		else if (preg_match("/[^a-zA-Z0-9_-]/", $field)){
-			return "Username може містити букви, цифри, -, _ <br>";
+			return "Username can contain a-zA-Z0-9_- ";
 		}		
-	 	return "";
+	 	
 	}
 
-	function validate_password($field) {
+	function validate_password($field) {		
 		if ($field == ""){
-			return "Please enter Password<br>";
+			return "Please enter Password";		
 		}
 		else if (strlen($field) < 6){
-			return "Password повинен містити > 6 символів<br>";
+			return "Please enter > 6 chars";
 		}
-		return "";
+		
 	}
 
 
 	function validate_email($field) {
 		if ($field == ""){
-			return "Please enter email<br>";
+			return "Please enter email";
 		}
 		else if (!((strpos($field, ".") > 0) &&	(strpos($field, "@") > 0)) || preg_match("/[^a-zA-Z0-9.@_-]/", $field)){
 			return "Email has a wrong format";

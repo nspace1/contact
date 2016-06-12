@@ -17,11 +17,8 @@
 	if (isset($_POST["login"]) && isset($_POST["password"])){
 	 	$login = string_fix($_POST['login'], $conn);
 	 	$password = md5(trim(string_fix($_POST['password'], $conn)));
-
-	 	$fail = validate_login_page($login, $_POST['password'], $conn);
- 		
-		
-		if ($fail == "") {
+	 	$fail = validate_login_page($login, $_POST['password'], $conn);		
+		if ($fail == 'true') {
 		 	$sql = "SELECT id, username FROM users WHERE username='$login' and password ='$password'";
 		 	$result = mysqli_query($conn, $sql);
 		 	if ($result) {
@@ -45,12 +42,6 @@
 			}			
 		}		
 	}
-
-	foreach ($fail as $key => $value) {
-		echo '<br>'. $key. $value;
-		# code...
-	}
-
 //logout
 	if (isset($_POST['logout'])){
 		logout();

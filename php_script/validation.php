@@ -18,10 +18,15 @@
 	}
 
 	function validate_login_page($login, $password, $conn){				
-			$error="";
-			$error['login'] = validate_username($login,  $conn);			
+			$t = 'true';
+			$error['login'] = validate_login($login,  $conn);			
 			$error['password'] = validate_password($password);						
-			if ($error == ""){
+			foreach ($error as $key => $value) {
+				if (!empty($value)) {
+					$t = 'false';
+				}
+			}
+			if ($t == 'true'){
 				return true;
 			}
 			else{

@@ -35,11 +35,7 @@
 		}
 
 	}
-	
-
 	require 'php_script\view_contacts_list.php';
-
-
 	
 
 	//header
@@ -57,17 +53,17 @@
 								<tr><th>
 										all										
 										<input type="image" name="check_all" value="check_all" src="<?= isset($_SESSION['cheked_all']) ? $_SESSION['cheked_all'] == '' ? 'img\checked.png' : 'img\unchecked.png' : 'img\unchecked.png' ?>">
+									</th>	
+									<form  method='get' action='index.php'>
+									<th>
+										<input  type="submit" name="last"   value='Last' class='button_to_link'> <?= ($order_lastname == 'DESC') ? '&#9650' : '&#9660' ?>
+										<input type='hidden' name='order_lastname' value ="<?= $order_lastname ?>">
 									</th>
-																
-									
-
-
-									<th><input  type="submit" name="last"   value='Last' class='button_to_link'>  <?= (isset($symbol_l))? $symbol_l : '' ?> &nbsp;&nbsp; 
-									<input  type="submit" name="second_sort_l"   value='<?= (isset($second_symbol_l))? $second_symbol_l : ''; ?>' class='button_to_link'>
+									<th>
+										<input  type="submit" name="first"   value='First' class='button_to_link'> <?= ($order_firstname == 'DESC') ? '&#9650' : '&#9660' ?>			
+										<input type='hidden' name='order_firstname' value ="<?= $order_firstname ?>">
+										</form>
 									</th>
-
-									<th><input  type="submit" name="first"   value='First' class='button_to_link'>  <?= (isset($symbol_f))? $symbol_f : '' ?> &nbsp;&nbsp; 
-									<input  type="submit" name="second_sort_f"   value='<?= (isset($second_symbol_f))? $second_symbol_f : ''; ?>' class='button_to_link'></th>
 									<th>Email</th>
 									<th>Best Phone</th>
 								</tr>

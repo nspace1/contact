@@ -34,15 +34,23 @@
 					<form action='edit_view.php'>
 					<input type='submit' value= 'ADD'>		
 					</form>
-					<thead>
-						<tr>
-							<th><a href="index.php?sort_l=<?= $_SESSION['cur_sort_l'];?>">Last </a><?= (isset($symbol_l))? $symbol_l : '' ?> &nbsp;&nbsp; <a href="index.php?second_sort_l=<?= $_SESSION['cur_second_sort_f'];?>"><?= (isset($second_symbol_l))? $second_symbol_l : ''; ?></a></th>
-
-							<th><a href="index.php?sort_f=<?= $_SESSION['cur_sort_f'];?>">First </a><?= (isset($symbol_f))? $symbol_f : '' ?>  &nbsp;&nbsp; <a href="index.php?second_sort_f=<?= $_SESSION['cur_second_sort_l'];?>"><?= (isset($second_symbol_f))? $second_symbol_f : ''; ?></a></th>
-							<th>Email</th>
-							<th>Best Phone</th>
-						</tr>
-					</thead>
+					<form  method='post' action='index.php'>
+						<thead>
+							<tr>
+								<th>
+									<input  type="submit" name="last"   value='Last' class='button_to_link'> <?= ($order_lastname == 'DESC') ? '&#9650' : '&#9660' ?>
+									<input type='hidden' name='order_lastname' value ="<?= $order_lastname ?>">
+								</th>
+								<th>
+									<input  type="submit" name="first"   value='First' class='button_to_link'> <?= ($order_firstname == 'DESC') ? '&#9650' : '&#9660' ?>			
+									<input type='hidden' name='order_firstname' value ="<?= $order_firstname ?>">
+								</th>
+								<th>Email</th>
+								<th>Best Phone</th>
+							</tr>
+						</thead>
+						<input type='hidden' name='page_active' value ="<?= $page_active ?>">
+					</form>
 					<tbody>
 						<?php	
 							if (!empty($result)){
@@ -56,9 +64,9 @@
 				<input type='submit' value= 'ADD'>				
 				</form>				
 				<?php
-					if ($how_many_records > $num_records_per_page){		
+					if ($how_many_records > NUM_RECORDS_PER_PAGE){		
 						//php_script\view_contacts_list.php
-						view_pagination($how_many_records, $num_records_per_page, $pre_page, $pre_page, $pre_page2, $pre_page, $next_page, $next_page2, $next_page, $last_page, 'index.php');
+						view_pagination($how_many_records, $pre_page, $pre_page, $pre_page2, $pre_page, $next_page, $next_page2, $next_page, $last_page, $order_lastname, $order_firstname, $page_active, 'index.php');						
 					}
 				?>
 				</div>

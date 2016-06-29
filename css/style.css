@@ -124,6 +124,14 @@ box-shadow: 10px 10px 5px #888888;
 	margin-top: 25px;
 }
 
+.error_f{
+	display: block;
+	font-size: 11px;
+	margin: -7px 0 -4px;
+
+	color: red;
+}
+
 .msg {
 position: absolute;
 left:150px; 

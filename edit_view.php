@@ -1,12 +1,12 @@
 
-	<?php
-		require_once 'php_script\session.php';
-		session_security();
-		require_once 'php_script\validation.php';
-		require_once 'php_script\sql_connect.php';
-		$conn = sql_connect();		
-		
-		$form_button = 'add';
+<?php
+	require_once 'php_script\session.php';
+	session_security();
+	require_once 'php_script\validation.php';
+	require_once 'php_script\sql_connect.php';
+	$conn = sql_connect();		
+	
+	$form_button = 'add';
 //edit record in fields
 	if (isset($_POST['id']) && isset($_POST['edit_view'])) {
 	    $id = string_fix($_POST['id'], $conn);
@@ -100,8 +100,6 @@
 			}
 		}		
 		$validate = validate_add_edit($first_name, $last_name, $email, $home_phone, $work_phone, $cell_phone, $address1, $address2, $city, $state,	$zip, $country,	$birth_day, $conn);
-
-				
 		if ($validate == 'true'){
 	
 //  if button add insert
@@ -172,7 +170,9 @@
 					<tbody>
 						<tr>
 							<td>First</td><td></td>
-							<td><input type="text" name="first_name"   placeholder="<?= isset($validate['first'])? $validate['first'] : '';?>" value="<?=	isset($first_name)  ? isset($validate['first']) ? empty($validate['first']) ? $first_name : '' : $first_name : ''?>"></td>
+							<td> 
+								<span style='font-size: 11px; color: red;'><?= isset($validate['first'])? $validate['first'] : '';?></span><br>
+								<input type="text" name="first_name" value="<?= isset($first_name)  ?  $first_name : '' ?>"></td>
 						</tr>
 						<tr>
 							<td>Last</td><td></td>
@@ -198,43 +198,52 @@
 						<tr>
 							<td>Cell</td>
 							<td><input type="radio" name="best_phone" value="cell" <?= isset($cell_check) ? $cell_check : ''?>></td>
-							<td><input type="tel" name="cell_phone"   placeholder="<?= isset($validate['cell'])?
-							 $validate['cell'] : '';?>" value="<?=	isset($cell)  ? isset($validate['cell']) ? empty($validate['cell']) ? $cell_phone : '' : $cell_phone : ''?>"></td>
+							<td>
+								<?= isset($validate['cell'])? "<span class='error_f'> " . $validate['cell']. "</span>": '';?>
+								<input type="tel" name="cell_phone" value="<?=	isset($cell_phone)  ?  $cell_phone : ''?>"></td>
 						</tr>
 						<tr>
 							<td>Address 1</td><td></td>
-							<td><input type="text" name="address1"  placeholder="<?= isset($validate['address1'])?
-							 $validate['address1'] : '';?>" value="<?=	isset($address1)  ? isset($validate['address1']) ? empty($validate['address1']) ? $address1 : '' : $address1 : ''?>"></td>
+							<td>
+								<?= isset($validate['address1'])? "<span class='error_f'> " . $validate['address1']. "</span>": '';?>
+								<input type="text" name="address1"  value="<?=	isset($address1) ? $address1 : ''?>"></td>
 						</tr>
 						<tr>
 							<td>Address 2</td><td></td>
-							<td><input type="text" name="address2"  placeholder="<?= isset($validate['address2'])?
-							 $validate['address2'] : '';?>" value="<?=	isset($address2)  ? isset($validate['address2']) ? empty($validate['address2']) ? $address2 : '' : $address2 : ''?>"></td>
+
+							<td>
+								<?= isset($validate['address2'])? "<span class='error_f'> " . $validate['address2']. "</span>": '';?>
+								<input type="text" name="address2"  value="<?=	isset($address2) ? $address2 : ''?>"></td>
 						</tr>
 						<tr>
 							<td>City</td><td></td>
-							<td><input type="text" name="city"  placeholder="<?= isset($validate['city'])?
-							 $validate['city'] : '';?>" value="<?=	isset($city)  ? isset($validate['city']) ? empty($validate['city']) ? $city : '' : $city : ''?>"></td>
+							<td>
+								<?= isset($validate['city'])? "<span class='error_f'> " . $validate['city']. "</span>": '';?>
+								<input type="text" name="city"  value="<?=	isset($city) ? $city : ''?>"></td>
 						</tr>
 						<tr>
 							<td>State</td><td></td>
-							<td><input type="text" name="state" placeholder="<?= isset($validate['state'])?
-							 $validate['state'] : '';?>" value="<?=	isset($state)  ? isset($validate['state']) ? empty($validate['state']) ? $state : '' : $state : ''?>"></td>
+							<td>
+								<?= isset($validate['state'])? "<span class='error_f'> " . $validate['state']. "</span>": '';?>
+								<input type="text" name="state"  value="<?=	isset($state) ? $state : ''?>"></td>
 						</tr>
 						<tr>
 							<td>ZIP</td><td></td>
-							<td><input type="text" name="zip"   placeholder="<?= isset($validate['zip'])?
-							 $validate['zip'] : '';?>" value="<?=	isset($zip)  ? isset($validate['zip']) ? empty($validate['zip']) ? $zip : '' : $zip : ''?>"></td>
+							<td>
+								<?= isset($validate['zip'])? "<span class='error_f'> " . $validate['zip']. "</span>": '';?>
+								<input type="text" name="zip"  value="<?=	isset($zip) ? $zip : ''?>"></td>
 						</tr>
-						<tr>
+						<tr> 
 							<td>Country</td><td></td>
-							<td><input type="text" name="country"  placeholder="<?= isset($validate['country'])?
-							 $validate['country'] : '';?>" value="<?=	isset($country)  ? isset($validate['country']) ? empty($validate['country']) ? $country : '' : $country : ''?>"></td>
+							<td>
+								<?= isset($validate['country'])? "<span class='error_f'> " . $validate['country']. "</span>": '';?>
+								<input type="text" name="country" value="<?=	isset($country)  ?  $country : ''?>"></td>
 						</tr>
 						<tr>
 							<td>Birthday</td><td></td>
-							<td><input type="text" name="birth_day"  placeholder="<?= isset($validate['email'])?
-							 $validate['birthday'] : 'YYYY-MM-DD';?>" value="<?=	isset($birth_day)  ? isset($validate['birthday']) ? empty($validate['birthday']) ? $birth_day : '' : $birth_day : ''?>"></td>
+							<td>
+								<?= isset($validate['birthday'])? "<span class='error_f'> " . $validate['birthday']. "</span>": '';?>
+								<input type="text" name="birth_day"  placeholder="YYYY-MM-DD" value="<?=	isset($birth_day)  ?  $birth_day : ''?>"></td>							
 						</tr>
 						<tr>
 							<td>								

@@ -1,7 +1,5 @@
 <?php
 
-	
-		
 	//pagination	
 	if (isset($_GET['page_active'])) {
 		$page_active =$_GET['page_active'];
@@ -116,10 +114,9 @@
 		$sql =  "SELECT id, last_name, first_name, cell_phone, work_phone, home_phone, email, best_phone FROM  contacts, best_phone WHERE best_phone.id_contacts = contacts.id AND contacts.users_id =" .$_SESSION['users_id']. " ORDER BY last_name $order_lastname , first_name $order_firstname  LIMIT $start_from," .  NUM_RECORDS_PER_PAGE;
 		$result = mysqli_query($conn, $sql);
 		if (!$result) {
-			$log_sql =  "Помилка: " . mysqli_error($conn);
-			echo $log_sql;			
-			//header ("location:error.php");
-			//exit;
+			$log_sql =  "Помилка: " . mysqli_error($conn);				
+			header ("location:error.php");
+			exit;
 		}
 	}	
 	mysqli_close($conn);	

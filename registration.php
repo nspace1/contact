@@ -44,19 +44,22 @@
 	<main class="main">
 		<div class="container">
 			<form action="registration.php" method="post" id="reg">				
-			<div class="form">
-			<input  type="text" name="username"  value="<?=	isset($username)  ? isset($validate['username']) ? empty($validate['username']) ? $username : '' : $username : ''?>"  placeholder="<?= isset($validate['username'])? $validate['username'] : 'Username';?>">
-			</div>
-			<div class="form">
-			<input  type="password" name="password" value="<?=	isset($password)  ? isset($validate['password']) ? empty($validate['password']) ? $password : '' : $password : ''?>" placeholder="<?= isset($validate['password'])? $validate['password'] : 'Password';?>">
-			</div>
-			<div class="form">
-			<input type="password" name="confirm_password"  placeholder="<?= isset($validate['equal'])? $validate['equal'] : 'Confirm password';?>">
-			</div>	
-			<div class="form">
-			<a href="" onclick="document.getElementById('reg').submit('ок'); return false;" style="color:white"><h2>Click to Registration</h2></a>	
-			<input type="submit" name="ок" value="Ok" style="visibility: hidden">
-			</div>
+				<div class="form">
+					<?= isset($validate['username'])? "<span class='error_f'> " . $validate['username']. "</span>": '';?>
+					<input  type="text" name="username"  value="<?=	isset($username)  ?  $username : ''?>"  placeholder="Username">
+				</div>
+				<div class="form">
+					<?= isset($validate['password'])? "<span class='error_f'> " . $validate['password']. "</span>": '';?>
+					<input  type="password" name="password" value="" placeholder="Password">
+				</div>
+				<div class="form">
+					<?= isset($validate['equal'])? "<span class='error_f'> " . $validate['equal']. "</span>": '';?>
+					<input type="password" name="confirm_password"  placeholder="Confirm password">
+				</div>	
+				<div class="form">
+					<a href="" onclick="document.getElementById('reg').submit('ок'); return false;" style="color:white"><h2>Click to Registration</h2></a>	
+					<input type="submit" name="ок" value="Ok" style="visibility: hidden">
+				</div>
 			</form>	
 		</div>	
 	</main>

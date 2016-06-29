@@ -154,7 +154,6 @@
 			exit;
 			}
 		}
-
 	}
 	mysqli_close($conn);
 
@@ -171,29 +170,34 @@
 						<tr>
 							<td>First</td><td></td>
 							<td> 
-								<span style='font-size: 11px; color: red;'><?= isset($validate['first'])? $validate['first'] : '';?></span><br>
+								<?= isset($validate['first'])? "<span class='error_f'> " . $validate['first']. "</span>": '';?>
 								<input type="text" name="first_name" value="<?= isset($first_name)  ?  $first_name : '' ?>"></td>
 						</tr>
 						<tr>
 							<td>Last</td><td></td>
-							<td><input type="text" name="last_name"  placeholder="<?= isset($validate['last'])? $validate['last'] : '';?>" value="<?=	isset($last_name)  ? isset($validate['last']) ? empty($validate['last']) ? $last_name : '' : $last_name : ''?>" ></td>
+							 <td>
+								<?= isset($validate['last'])? "<span class='error_f'> " . $validate['last']. "</span>": '';?>
+								<input type="text" name="last_name"  value="<?=	isset($last_name) ? $last_name : ''?>"></td>
 						</tr>
 						<tr>
-							<td>Email</td><td></td>
-							<td><input type="text" name="email" placeholder="<?= isset($validate['email'])?
-							 $validate['email'] : '';?>" value="<?=	isset($email)  ? isset($validate['email']) ? empty($validate['email']) ? $email : '' : $email : ''?>"></td>
+							<td>Email</td><td></td>		
+							 <td>
+								<?= isset($validate['email'])? "<span class='error_f'> " . $validate['email']. "</span>": '';?>
+								<input type="text" name="email"  value="<?=	isset($email) ? $email : ''?>"></td>
 						</tr>
 						<tr>
 							<td>Home</td>
 							<td><input type="radio" name="best_phone" value="home" <?= isset($home_check) ? $home_check : ''?>></td>
-							<td><input type="tel" name="home_phone"  placeholder="<?= isset($validate['home'])?
-							 $validate['home'] : '';?>" value="<?=	isset($home)  ? isset($validate['home']) ? empty($validate['home']) ? $home_phone : '' : $home_phone : ''?>"></td>
+							<td>
+								<?= isset($validate['home'])? "<span class='error_f'> " . $validate['home']. "</span>": '';?>
+								<input type="tel" name="home_phone" value="<?=	isset($home_phone)  ?  $home_phone : ''?>"></td>
 						</tr>
 						<tr>
 							<td>Work</td>
 							<td><input type="radio" name="best_phone" value="work" <?= isset($work_check) ? $work_check : ''?> ></td>
-							<td><input type="tel" name="work_phone" placeholder="<?= isset($validate['work'])?
-							 $validate['work'] : '';?>" value="<?=	isset($work)  ? isset($validate['work']) ? empty($validate['work']) ? $work_phone : '' : $work_phone : ''?>" ></td>
+							<td>
+								<?= isset($validate['work'])? "<span class='error_f'> " . $validate['work']. "</span>": '';?>
+								<input type="tel" name="work_phone" value="<?=	isset($work_phone)  ?  $work_phone : ''?>"></td>
 						</tr>
 						<tr>
 							<td>Cell</td>

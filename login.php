@@ -68,8 +68,10 @@
 			</div>	
 			<div class="form">
 				<form class="login" action="login.php" method="post">
-				<input type="text" name="login" placeholder="<?= isset($fail['login']) ? $fail['login'] : 'login' ?>" >
-				<input type="password" name="password" placeholder="<?= isset($fail['password']) ? $fail['password'] : 'password' ?>">
+				<?= isset($fail['login']) ? "<span class='error_f'> " . $fail['login'] . "</span>": '';?>
+				<input type="text" name="login" placeholder="Login" >
+				<?= isset($fail['password']) ? "<span class='error_f'> " . $fail['password'] . "</span>": '';?>
+				<input type="password" name="password" placeholder="Password">
 				<input type="submit" value="Sing in"><br><br>
 				
 			</form><br>

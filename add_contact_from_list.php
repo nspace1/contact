@@ -4,9 +4,10 @@
 	include 'php_script\validation.php';
 	require_once 'php_script\sql_connect.php'; 
 	$conn = sql_connect();
+	$to = '';	
 
-	if (isset($_POST['ACCEPT'])){
-		if (isset($_POST['checkAll'])){
+	if (isset($_POST['ACCEPT'])){		
+		if ($_POST['cheked_all'] == ''){		
 			$sql = "SELECT email FROM contacts WHERE users_id = " .$_SESSION['users_id'];
 			$result = mysqli_query($conn, $sql);
 			if (! $result) {				
@@ -18,7 +19,7 @@
 			}
 		}
 		else {
-			foreach ($_POST as $key => $value) {
+			foreach ($_POST as $key => $value) {			
 				if ($value != "ACCEPT" and $value != "checkAll"){			    	
 			    	$to =$to . $value . ", ";
 			    }
@@ -35,8 +36,8 @@
 		}
 
 	}
-	require 'php_script\view_contacts_list.php';
 	
+require 'php_script\view_contacts_list.php';
 
 	//header
 	require 'pages\header.php';
@@ -54,15 +55,12 @@
 										all										
 										<input type="image" name="check_all" value="check_all" src="<?= isset($_SESSION['cheked_all']) ? $_SESSION['cheked_all'] == '' ? 'img\checked.png' : 'img\unchecked.png' : 'img\unchecked.png' ?>">
 									</th>	
-									<form  method='get' action='index.php'>
+									
 									<th>
-										<input  type="submit" name="last"   value='Last' class='button_to_link'> <?= ($order_lastname == 'DESC') ? '&#9650' : '&#9660' ?>
-										<input type='hidden' name='order_lastname' value ="<?= $order_lastname ?>">
+										<input  type="submit" name="last"   value='Last' class='button_to_link'> <?= ($order_lastname == 'DESC') ? '&#9650' : '&#9660' ?>								
 									</th>
 									<th>
-										<input  type="submit" name="first"   value='First' class='button_to_link'> <?= ($order_firstname == 'DESC') ? '&#9650' : '&#9660' ?>			
-										<input type='hidden' name='order_firstname' value ="<?= $order_firstname ?>">
-										</form>
+										<input  type="submit" name="first"   value='First' class='button_to_link'> <?= ($order_firstname == 'DESC') ? '&#9650' : '&#9660' ?>
 									</th>
 									<th>Email</th>
 									<th>Best Phone</th>
@@ -77,11 +75,17 @@
 						</table>
 					<input type='submit' name="ACCEPT" value= 'ACCEPT'>
 					<input type='button' value= 'CANCEL' onclick="location.href='event.php'">
+					<input type='hidden' name='order_firstname' value ="<?= $order_firstname ?>">
+					<input type='hidden' name='order_lastname' value ="<?= $order_lastname ?>">
+					<input type='hidden' name='cheked_all' value ="<?= isset($cheked_all) ? $cheked_all : '' ?>">
+					<input type='hidden' name='cheked' value ="<?= isset($cheked) ? implode(',' , $cheked) : '' ?>">
+					<input type='hidden' name='page_active' value ="<?= $page_active ?>">
+					
 				</form>
 				<?php
-				if ($how_many_records > $num_records_per_page){		
+				if ($how_many_records > NUM_RECORDS_PER_PAGE){		
 					//php_script\view_contacts_list.php									
-					view_pagination($how_many_records, $num_records_per_page, $pre_page, $pre_page, $pre_page2, $pre_page, $next_page, $next_page2, $next_page, $last_page, 'add_contact_from_list.php');		
+					view_pagination($how_many_records, $pre_page, $pre_page, $pre_page2, $pre_page, $next_page, $next_page2, $next_page, $last_page, $order_lastname, $order_firstname, $page_active, 'add_contact_from_list.php');			
 				}
 				?>		
 			</div>

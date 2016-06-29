@@ -10,9 +10,8 @@
 	$send_address="";
 	
 	if (isset($_POST['send'])){
-		unset($_SESSION['cheked']);
-		unset($_SESSION['cheked_all']);
-		unset($_SESSION['view_id']);
+
+		unset($view_id);
 //Add not exist email and insert event_sendmail
 		$to1 = string_fix($_POST['to'], $conn);
 		$tok = strtok($to1, " ,\n\t");
@@ -81,7 +80,7 @@
 							?>
 							<input type='hidden' name='add_ev_msg' value='add_ev_msg'>
 							<br>
-							<input  type="submit" name="add_email"  id="add_email" value='Add to contact mananger' class='button_to_link'> 
+							<input  type="submit" name="add_email"  id="add_email" value='Add to contact mananger' class='button_to_link'><br> 
 							<a href="event.php" >Go to My Albums/Events</a>
 						</form>
 					</div>

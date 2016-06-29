@@ -29,8 +29,50 @@
 			$pre_page2 = ($page_active > 2)? $page_active - 2:'';			
 		}	
 
+//combine cheked pagination and sort 	
+
+		if (isset($_POST['order_lastname']) and isset($_POST['order_firstname'] )){
+			$order_lastname = $_POST['order_lastname'];
+			$order_firstname = $_POST['order_firstname'];
+		}
+		
+
+		if (isset($_POST['cheked_all']) and isset($_POST['cheked'] )){
+			$cheked_all = $_POST['cheked_all'];
+			$cheked = explode(',' , $_POST['cheked']);
+		}
+
+		if (isset($_POST['check_all'])){	
+			if (!isset($cheked_all)){
+			$cheked_all = '';				
+			}
+		
+				
+			switch ( $cheked_all ) {
+				case 'checkAll':					
+					while ($row = mysqli_fetch_assoc($res)) {
+						$chek_all[] = $row['id'];
+					}
+					$cheked = $chek_all;
+					$cheked_all = '';
+	
+					break;
+				case '':				
+					$cheked = '';
+					$cheked_all = 'checkAll';
+
+					break;
+			}	
+		}
+
+		
 
 
+		
+
+
+
+/*
 		if (isset($_POST['check_all'])){
 			if (!isset($_SESSION['cheked_all'])){
 				$_SESSION['cheked_all'] = '';				
@@ -79,10 +121,12 @@
 				$_SESSION['cheked'] = $cheked;			
 			}
 		}
+*/
 
 
-//sort
-					
+
+
+//sort			
 		if (isset($_POST['last']) and isset($_POST['order_lastname'])){
 			if ($_POST['order_lastname'] == 'DESC'){
 				$order_lastname = 'ASC';
@@ -106,10 +150,11 @@
 			$order_firstname = DEFAULT_ORDER_FIRSTNAME;
 		}
 //combine pagination and sort 
-		if (isset($_GET['order_lastname']) and isset($_GET['order_firstname'] )){
+		if (isset($_GET['order_lastname']) and isset($_GET['order_firstname'])){
 			$order_lastname = $_GET['order_lastname'];
 			$order_firstname = $_GET['order_firstname'];
 		}
+		
 
 		$sql =  "SELECT id, last_name, first_name, cell_phone, work_phone, home_phone, email, best_phone FROM  contacts, best_phone WHERE best_phone.id_contacts = contacts.id AND contacts.users_id =" .$_SESSION['users_id']. " ORDER BY last_name $order_lastname , first_name $order_firstname  LIMIT $start_from," .  NUM_RECORDS_PER_PAGE;
 		$result = mysqli_query($conn, $sql);
@@ -178,7 +223,7 @@
 
 	function view_contacts_add_contact_from_list_php($result){
 		
-		unset($_SESSION['view_id']);
+		unset($view_id);
 		while ($row = mysqli_fetch_assoc($result)) { 
 				$best_phone = '';
 				$checked ='';
@@ -191,13 +236,13 @@
 				elseif ($row["best_phone"] == 'home'){
 				$best_phone = $row["home_phone"];
 			}	
-			if (isset($_SESSION['cheked'])){				
-				if  (in_array($row['id'], $_SESSION['cheked'])){
+			if (isset($cheked)){				
+				if  (in_array($row['id'], $cheked)){
 					$checked = 'checked';
 				
 				}				
 			}
-			$_SESSION['view_id'][] = $row['id'];
+			$view_id[] = $row['id'];
 			
 			echo 
 				"<tr>

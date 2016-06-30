@@ -53,7 +53,7 @@ require 'php_script\view_contacts_list.php';
 							<thead>
 								<tr><th>
 										all										
-										<input type="image" name="check_all" value="check_all" src="<?= isset($_SESSION['cheked_all']) ? $_SESSION['cheked_all'] == '' ? 'img\checked.png' : 'img\unchecked.png' : 'img\unchecked.png' ?>">
+										<input type="image" name="check_all" value="check_all" src="<?= isset($cheked_all) ? $cheked_all == '' ? 'img\checked.png' : 'img\unchecked.png' : 'img\unchecked.png' ?>">
 									</th>	
 									
 									<th>

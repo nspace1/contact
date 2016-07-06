@@ -1,4 +1,4 @@
-
+0
 <?php
 	require_once 'php_script\session.php';
 	session_security();
@@ -6,9 +6,9 @@
 	require_once 'php_script\sql_connect.php';
 	$conn = sql_connect();
 
-	$msg_add_mail="";	
+	$msg_add_mail="";
 	$send_address="";
-	
+
 	if (isset($_POST['send'])){
 
 		unset($view_id);
@@ -20,20 +20,19 @@
     		$result=mysqli_query($conn, $sql);
     		if   (mysqli_num_rows($result)) {
     			$row = mysqli_fetch_assoc($result);
-    			$id_contacts = $row['id'];    			
+    			$id_contacts = $row['id'];
 			}
-			else {				
+			else {
 				$msg_add_mail[] = $tok;
 			}
 //list mail to send
 			$send_address[] = $tok;
 			    		$tok = strtok(" ,\n\t");
-		}			
+		}
 	}
 //insert not exist email
-	if(isset($_POST['add_ev_msg'])) {			
+	if(isset($_POST['add_ev_msg'])) {
 		foreach ($_POST as $key  => $value) {
-			
 		    if ($value != "add_ev_msg" and $value != "Add to contact mananger"  ){
 		    	$email = strtolower(string_fix($_POST["$key"], $conn));
 		    	$sql = "INSERT INTO contacts (email, users_id)

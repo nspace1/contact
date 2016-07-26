@@ -6,7 +6,12 @@
 	$conn = sql_connect();
 	$to = '';	
 
-	if (isset($_POST['ACCEPT'])){		
+        if (isset($_POST['CANCEL'])){
+            header ("location:event.php");
+            exit;
+        }
+        
+        if (isset($_POST['ACCEPT'])){		
 		if ($_POST['cheked_all'] == ''){		
 			$sql = "SELECT email FROM contacts WHERE users_id = " .$_SESSION['users_id'];
 			$result = mysqli_query($conn, $sql);
@@ -48,7 +53,7 @@ require 'php_script\view_contacts_list.php';
 				<span style='text-align: right'><h3>SELECTION MAIN PAGE</h3></span>
 					<form action='add_contact_from_list.php' method="post">
 						<input type='submit' name="ACCEPT" value= 'ACCEPT'>
-						<input type='button' value= 'CANCEL' onclick="location.href='event.php'">
+						<input type='submit' value= 'CANCEL' name='CANCEL'>
 						<table>
 							<thead>
 								<tr><th>
@@ -74,7 +79,7 @@ require 'php_script\view_contacts_list.php';
 							</tbody>
 						</table>
 					<input type='submit' name="ACCEPT" value= 'ACCEPT'>
-					<input type='button' value= 'CANCEL' onclick="location.href='event.php'">
+					<input type='submit' value= 'CANCEL' name='CANCEL'>
 					<input type='hidden' name='order_firstname' value ="<?= $order_firstname ?>">
 					<input type='hidden' name='order_lastname' value ="<?= $order_lastname ?>">
 					<input type='hidden' name='cheked_all' value ="<?= isset($cheked_all) ? $cheked_all : '' ?>">

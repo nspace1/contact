@@ -26,6 +26,16 @@ td {
 .container {
 	margin:0 auto;
 	width:900px;
+         
+}
+
+.main {
+	min-height: 400px;
+         margin: auto; 
+           display: flex;
+    align-items: center;
+    justify-content: center;
+        
 }
 /*header*/
 .header{
@@ -185,9 +195,7 @@ box-shadow: 10px 10px 5px #888888;
 	font-weight: bold;
 }
 
-.main {
-	min-height: 400px;
-}
+
 
 
 

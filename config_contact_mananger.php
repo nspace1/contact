@@ -4,10 +4,10 @@
     	require_once 'php_script\mysql_login.php';    		
 	}
 	else{
-		define(DB_HOSTNAME, 'localhost');
-		define(DB_DATABASE, 'contact_mananger');
-		define(DB_USERNAME, '');
-		define(DB_PASSWORD, '');
+		define('DB_HOSTNAME', 'localhost');
+		define('DB_DATABASE', 'contact_mananger');
+		define('DB_USERNAME', 'naaa');
+		define('DB_PASSWORD', '98465703');
 	}
 
 	//pagination

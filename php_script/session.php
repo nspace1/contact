@@ -30,4 +30,3 @@ function session_security(){
 		logout();
 	}
 }
-?>

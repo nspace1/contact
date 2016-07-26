@@ -65,66 +65,6 @@
 			}	
 		}
 
-		
-
-
-		
-
-
-
-/*
-		if (isset($_POST['check_all'])){
-			if (!isset($_SESSION['cheked_all'])){
-				$_SESSION['cheked_all'] = '';				
-			}
-			switch ( $_SESSION['cheked_all'] ) {
-				case 'checkAll':					
-					while ($row = mysqli_fetch_assoc($res)) {
-						$chek_all[] = $row['id'];
-					}
-					$_SESSION['cheked'] = $chek_all;
-					$_SESSION['cheked_all'] = '';
-					break;
-				case '':				
-					unset($_SESSION['cheked']);
-					$_SESSION['cheked_all'] = 'checkAll';
-					break;
-			}	
-		}
-
-
-		if (isset($_POST['second_sort_l']) or isset($_POST['first']) or isset($_POST['last']) or isset($_POST['second_sort_f'])){			
-			foreach ($_POST as $key => $value) {
-				$key = explode('=', $key);
-				if ($key[0] == 'id'){			    	
-			    	$cheked[] = $key[1];
-			    }			    		    	
-			}
-
-			if (isset($_SESSION['view_id']) and isset($_SESSION['cheked']) and isset($cheked)){
-						$list_id = array_intersect($_SESSION['view_id'], $_SESSION['cheked']);						
-						foreach ($list_id as $key => $value) {
-							if (!in_array($value, $cheked)){
-								
-								unset($_SESSION['cheked'][$key]);
-							}
-						foreach ($_SESSION['view_id'] as $key => $value) {								
-							}
-						}  	
-				    }
-			
-		
-			if (isset($_SESSION['cheked']) and isset($cheked)){			
-				$_SESSION['cheked'] = $_SESSION['cheked'] + $cheked;
-			}
-			elseif (isset($cheked)){
-				$_SESSION['cheked'] = $cheked;			
-			}
-		}
-*/
-
-
-
 
 //sort			
 		if (isset($_POST['last']) and isset($_POST['order_lastname'])){

@@ -34,7 +34,7 @@ class QueriesToDB
         $conn = $db->getConnection();        
         $result = $conn->query($sql);
         
-        if (result !== false) {
+        if ($result !== false) {
             return $result;
         } else {
             $log_sql =  "error" . $sql . "<br>" . mysqli_error($conn);

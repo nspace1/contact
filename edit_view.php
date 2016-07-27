@@ -75,29 +75,23 @@
 		$id_edit = string_fix($_POST['id_edit'], $conn);
 
 		if (isset($_POST['best_phone'])) {
-			if (string_fix($_POST['best_phone'], $conn) == 'work') {
-				$best_phone = 'work';
-			}
-			elseif (string_fix($_POST['best_phone'], $conn) == 'home') {
-				$best_phone = 'home';
-			}
-			elseif (string_fix($_POST['best_phone'], $conn) == 'cell') {
-				$best_phone = 'cell';
-			}
-		}
-		else{
-			if ($cell_phone !== ''){
-				$best_phone = 'cell';
-			}
-			elseif ($home_phone !== ''){
-				$best_phone = 'home';
-			}
-			elseif ($work_phone !== ''){
-				$best_phone = 'work';
-			}
-			else{
-				$best_phone = '';
-			}
+                    if (string_fix($_POST['best_phone'], $conn) == 'work') {
+                            $best_phone = 'work';
+                    } elseif (string_fix($_POST['best_phone'], $conn) == 'home') {
+                            $best_phone = 'home';
+                    } elseif (string_fix($_POST['best_phone'], $conn) == 'cell') {
+                            $best_phone = 'cell';
+                    }
+		} else{
+                    if ($cell_phone !== ''){
+                            $best_phone = 'cell';
+                    } elseif ($home_phone !== ''){
+                            $best_phone = 'home';
+                    } elseif ($work_phone !== ''){
+                            $best_phone = 'work';
+                    } else{
+                            $best_phone = '';
+                    }
 		}		
 		$validate = validate_add_edit($first_name, $last_name, $email, $home_phone, $work_phone, $cell_phone, $address1, $address2, $city, $state,	$zip, $country,	$birth_day, $conn);
 		if ($validate == 'true'){
@@ -129,7 +123,7 @@
 //if button edit UPDATE
 			if (isset($_POST["edit"])) {			
 
-				$sql = "UPDATE contacts c JOIN best_phone b ON c.id='$id_edit' AND b.id_contacts='$id_edit' SET
+				$sql = "UPDATE contacts c JOIN best_phone b ON c.id='$id_edit' AND b.id_contacts='$id_edit' AND users_id =" . $_SESSION['users_id'] . " SET
 				c.first_name = '$first_name', 
 				c.last_name = '$last_name',
 				c.email = '$email',

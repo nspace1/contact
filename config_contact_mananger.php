@@ -4,14 +4,16 @@
     	require_once 'php_script\mysql_login.php';    		
 	}
 	else{
-		define('DB_HOSTNAME', 'localhost');
-		define('DB_DATABASE', 'contact_mananger');
-		define('DB_USERNAME', 'naaa');
-		define('DB_PASSWORD', '98465703');
+            define('DB_HOSTNAME', 'localhost');
+            define('DB_DATABASE', 'contact_mananger');
+            define('DB_USERNAME', 'naaa');
+            define('DB_PASSWORD', '98465703');
 	}
 
 	//pagination
-	const NUM_RECORDS_PER_PAGE = 5;
+        define('NUM_RECORDS_PER_PAGE', '2');	
+        define('PAGE_AMOUNT_NUMBER', '4');
+       
 
 	//sort
 	const DEFAULT_ORDER_FIRSTNAME = 'ASC';

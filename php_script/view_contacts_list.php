@@ -123,41 +123,41 @@ $result = $DB->selectDB($sql);
 
 function view_contacts_list_index_php($result, $res){		
     if (mysqli_num_rows($res) !=  0){
-            while ($row = mysqli_fetch_assoc($result)) { 
-                    if ($row["best_phone"] == 'cell'){
-                            $best_phone = $row["cell_phone"];
-                    }
-                    elseif ($row["best_phone"] == 'work'){
-                            $best_phone = $row["work_phone"];
-                    }
-                    elseif ($row["best_phone"] == 'home'){
-                            $best_phone = $row["home_phone"];
-                    }
-                    elseif ($row["best_phone"] == ''){
-                            $best_phone ='';
-                    }
-                    echo 
-                            "<tr>
-                                    <td>" . $row["last_name"] . "</td>
-                                    <td>".  $row["first_name"] . "</td>
-                                    <td>" . $row["email"] . "</td>
-                                    <td>" . $best_phone ."</td>
-                                    <td>
-                                            <form  method='post' action='edit_view.php'>
-                                                    <input type='hidden' name='id' value=". $row["id"] .">
-                                                    <input type='hidden' name='edit_view' value='yes'>
-                                                    <input type='submit' value='edit/view'>
+        while ($row = mysqli_fetch_assoc($result)) { 
+                if ($row["best_phone"] == 'cell'){
+                        $best_phone = $row["cell_phone"];
+                }
+                elseif ($row["best_phone"] == 'work'){
+                        $best_phone = $row["work_phone"];
+                }
+                elseif ($row["best_phone"] == 'home'){
+                        $best_phone = $row["home_phone"];
+                }
+                elseif ($row["best_phone"] == ''){
+                        $best_phone ='';
+                }
+                echo 
+                        "<tr>
+                                <td>" . $row["last_name"] . "</td>
+                                <td>".  $row["first_name"] . "</td>
+                                <td>" . $row["email"] . "</td>
+                                <td>" . $best_phone ."</td>
+                                <td>
+                                        <form  method='post' action='edit_view.php'>
+                                                <input type='hidden' name='id' value=". $row["id"] .">
+                                                <input type='hidden' name='edit_view' value='yes'>
+                                                <input type='submit' value='edit/view'>
 
-                                            </form></td>
-                                    <td>
-                                            <form  method='post' action='index.php'>
-                                                    <input type='hidden' name='id' value=". $row["id"] .">
-                                                    <input type='hidden' name='email' value=". $row["email"] .">
-                                                    <input type='hidden' name='delete' value='yes'>
-                                                    <input type='submit' value='delete'>							
-                                            </form></td>
-                            </tr>";
-            } 
+                                        </form></td>
+                                <td>
+                                        <form  method='post' action='index.php'>
+                                                <input type='hidden' name='id' value=". $row["id"] .">
+                                                <input type='hidden' name='email' value=". $row["email"] .">
+                                                <input type='hidden' name='delete' value='yes'>
+                                                <input type='submit' value='delete'>							
+                                        </form></td>
+                        </tr>";
+        } 
     }
 }
 
